@@ -1,4 +1,4 @@
-> Cópia de [paullabs/espaco-em-codigo](https://github.com/paullabs/espaco-em-codigo) (commit `5169a7a`), importada por barbosajovane945-ops em 2026-11-09. Única alteração: esta nota no README. Licença original mantida em [LICENSE](LICENSE).
+> Cópia de [paullabs/espaco-em-codigo](https://github.com/paullabs/espaco-em-codigo) (commit `5169a7a`), importada por barbosajovane945-ops em 2026-11-09. Alterações: esta nota no README; `estudio/espaco/ferramentas/video.mjs` (opção `--qps` no rascunho) e `estudio/espaco/ferramentas/conferir_video.mjs` (aceita nomes registrados pelo `extra.js`), por barbosajovane945-ops em 2026-11-09. A marca d'água não foi tocada. Licença original mantida em [LICENSE](LICENSE).
 
 # espaco-em-codigo
 
