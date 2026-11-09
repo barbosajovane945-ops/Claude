@@ -1,0 +1,74 @@
+{
+ "titulo": "E se o Sol apagasse?",
+ "pergunta_mae": "E se o Sol apagasse agora?",
+ "fontes": [
+  "A luz do Sol leva cerca de 8 min 20 s (499 s) para chegar à Terra, a 1 unidade astronômica (NASA).",
+  "A gravidade também viaja à velocidade da luz: em 2017, a onda gravitacional GW170817 e a luz da mesma colisão de estrelas de nêutrons chegaram com 1,7 s de diferença depois de 130 milhões de anos (LIGO/Virgo e Fermi). Então a Terra sente a falta do Sol junto com a última luz, uns 8 minutos depois.",
+  "A Terra anda a cerca de 30 km/s na órbita; sem a atração do Sol, segue em linha reta na direção em que estava indo (a tangente da órbita).",
+  "Estimativa de David Stevenson (Caltech): sem o Sol, a temperatura média da superfície cairia a uns −18 °C em uma semana e a uns −73 °C em um ano. São estimativas, não medidas.",
+  "O gelo na superfície isola o oceano por baixo, e o calor interno da Terra manteria água líquida no fundo por muito tempo (Stevenson fala em centenas de milhares a milhões de anos).",
+  "Fontes hidrotermais no fundo do mar têm vida que se alimenta de química, não de luz (quimiossíntese), descobertas em 1977 no Rifte de Galápagos.",
+  "Na realidade o Sol não tem como apagar de uma vez: daqui a uns 5 bilhões de anos ele incha e vira uma gigante vermelha. O vídeo é uma hipótese."
+ ],
+ "voz_guia": {
+  "mac": "Luciana",
+  "taxa": 190
+ },
+ "falas": [
+  {"id": "A1", "pausa": 0.3, "pedacos": [
+    "E se o *Sol*|sol,terra",
+    "apagasse agora?|sol,terra"
+  ]},
+  {"id": "A2", "pausa": 0.5, "pedacos": [
+    "Por *oito minutos*,|luzSol,terra",
+    "ninguém ia perceber.|terra"
+  ]},
+  {"id": "B1", "pausa": 0.3, "pedacos": [
+    "Porque a luz do Sol|luzSol",
+    "demora oito minutos|pulso",
+    "pra chegar até aqui.|pulso,terra"
+  ]},
+  {"id": "B2", "pausa": 0.4, "pedacos": [
+    "A última luz|pulso",
+    "ainda está *a caminho*.|pulso,terra"
+  ]},
+  {"id": "B3", "pausa": 0.35, "pedacos": [
+    "E até a *gravidade*|orbita,terra",
+    "demora o mesmo tempo:|orbita,pulso",
+    "a Terra continua girando|terra,orbita",
+    "em volta do *nada*.|orbita"
+  ]},
+  {"id": "C1", "pausa": 0.35, "pedacos": [
+    "Aí a luz *acaba*,|terra",
+    "e a Terra sai da curva|terra,seta",
+    "em *linha reta*.|seta,terra"
+  ]},
+  {"id": "C2", "pausa": 0.4, "pedacos": [
+    "Mas o pior|terra",
+    "é o *frio*.|terra,gelo"
+  ]},
+  {"id": "C3", "pausa": 0.3, "pedacos": [
+    "Em uma semana,|gelo",
+    "a Terra inteira fica|gelo,terra",
+    "abaixo de *zero*.|gelo"
+  ]},
+  {"id": "C4", "pausa": 0.4, "pedacos": [
+    "Em um ano,|gelo",
+    "uns *setenta graus* negativos.|gelo"
+  ]},
+  {"id": "D1", "pausa": 0.3, "pedacos": [
+    "Mas no fundo do mar,|corte",
+    "o calor de *dentro* da Terra|corte,nucleo",
+    "segura a água *líquida*.|corte,oceano"
+  ]},
+  {"id": "D2", "pausa": 0.35, "pedacos": [
+    "E tem vida ali|corte",
+    "que nunca precisou do *Sol*.|corte"
+  ]},
+  {"id": "Q1", "pausa": 0.2, "pedacos": [
+    "E você,|terra",
+    "ia querer *saber*|terra",
+    "nesses oito minutos?|terra"
+  ]}
+ ]
+}
