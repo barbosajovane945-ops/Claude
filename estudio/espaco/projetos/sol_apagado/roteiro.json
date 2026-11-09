@@ -15,60 +15,108 @@
   "taxa": 190
  },
  "falas": [
-  {"id": "A1", "pausa": 0.3, "pedacos": [
+  {
+   "id": "A1",
+   "pausa": 0.3,
+   "pedacos": [
     "E se o *Sol*|sol,terra",
     "apagasse agora?|sol,terra"
-  ]},
-  {"id": "A2", "pausa": 0.5, "pedacos": [
+   ]
+  },
+  {
+   "id": "A2",
+   "pausa": 0.5,
+   "pedacos": [
     "Por *oito minutos*,|luzSol,terra",
     "ninguém ia perceber.|terra"
-  ]},
-  {"id": "B1", "pausa": 0.3, "pedacos": [
+   ]
+  },
+  {
+   "id": "B1",
+   "pausa": 0.3,
+   "pedacos": [
     "Porque a luz do Sol|luzSol",
     "demora oito minutos|pulso",
     "pra chegar até aqui.|pulso,terra"
-  ]},
-  {"id": "B2", "pausa": 0.4, "pedacos": [
+   ]
+  },
+  {
+   "id": "B2",
+   "pausa": 0.4,
+   "pedacos": [
     "A última luz|pulso",
     "ainda está *a caminho*.|pulso,terra"
-  ]},
-  {"id": "B3", "pausa": 0.35, "pedacos": [
+   ]
+  },
+  {
+   "id": "B3",
+   "pausa": 0.35,
+   "pedacos": [
     "E até a *gravidade*|orbita,terra",
     "demora o mesmo tempo:|orbita,pulso",
     "a Terra continua girando|terra,orbita",
     "em volta do *nada*.|orbita"
-  ]},
-  {"id": "C1", "pausa": 0.35, "pedacos": [
+   ]
+  },
+  {
+   "id": "C1",
+   "pausa": 0.35,
+   "pedacos": [
     "Aí a luz *acaba*,|terra",
     "e a Terra sai da curva|terra,seta",
     "em *linha reta*.|seta,terra"
-  ]},
-  {"id": "C2", "pausa": 0.4, "pedacos": [
+   ]
+  },
+  {
+   "id": "C2",
+   "pausa": 0.4,
+   "pedacos": [
     "Mas o pior|terra",
     "é o *frio*.|terra,gelo"
-  ]},
-  {"id": "C3", "pausa": 0.3, "pedacos": [
+   ]
+  },
+  {
+   "id": "C3",
+   "pausa": 0.3,
+   "pedacos": [
     "Em uma semana,|gelo",
     "a Terra inteira fica|gelo,terra",
     "abaixo de *zero*.|gelo"
-  ]},
-  {"id": "C4", "pausa": 0.4, "pedacos": [
+   ]
+  },
+  {
+   "id": "C4",
+   "pausa": 0.4,
+   "pedacos": [
     "Em um ano,|gelo",
     "uns *setenta graus* negativos.|gelo"
-  ]},
-  {"id": "D1", "pausa": 0.3, "pedacos": [
+   ]
+  },
+  {
+   "id": "D1",
+   "pausa": 0.3,
+   "pedacos": [
     "Mas no fundo do mar,|corte",
     "o calor de *dentro* da Terra|corte,nucleo",
     "segura a água *líquida*.|corte,oceano"
-  ]},
-  {"id": "D2", "pausa": 0.35, "pedacos": [
+   ]
+  },
+  {
+   "id": "D2",
+   "pausa": 0.35,
+   "pedacos": [
     "E tem vida ali|corte",
     "que nunca precisou do *Sol*.|corte"
-  ]},
-  {"id": "Q1", "pausa": 0.2, "pedacos": [
-    "E você,|terra",
-    "ia querer *saber*|terra",
-    "nesses oito minutos?|terra"
-  ]}
+   ]
+  },
+  {
+   "id": "Q1",
+   "pausa": 0.2,
+   "pedacos": [
+    "E você,|corte",
+    "ia querer *saber*|corte",
+    "nesses oito minutos?|corte"
+   ]
+  }
  ]
 }

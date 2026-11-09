@@ -1,991 +1,527 @@
 {
- "titulo": "E se a Lua sumisse? (as marés)",
+ "titulo": "E se o Sol apagasse?",
  "estilo": "vivo",
- "luz": {
-  "de": "solLuz"
- },
  "cauda": 1.7,
+ "luz": {
+  "de": "sol"
+ },
  "objetos": {
-  "terra": {
-   "corpo": "terra",
-   "pos": [
-    0,
-    0,
-    0
-   ],
-   "raio": 1,
-   "giro_inicial": -30,
-   "giro": [
-    {
-     "de": "inicio",
-     "ate": "B5",
-     "para": 0,
-     "curva": "linear"
-    },
-    {
-     "de": "B5",
-     "ate": "B6.fim",
-     "para": 360,
-     "curva": "linear"
-    },
-    {
-     "de": "B6.fim",
-     "ate": "fim",
-     "para": 400,
-     "curva": "linear"
-    }
-   ]
-  },
-  "lua": {
-   "corpo": "lua",
-   "pos": [
-    2.7,
-    0,
-    0
-   ],
-   "raio": 0.4,
-   "entra": "cresce",
-   "sai": "direto",
-   "mostrar": [
-    [
-     "inicio",
-     "A3"
-    ],
-    [
-     "B1+0.1",
-     "C2"
-    ]
-   ]
-  },
-  "solLuz": {
-   "corpo": "estrelaG",
-   "pos": [
-    -60,
-    0,
-    -8
-   ],
-   "raio": 6,
-   "halo": 3,
-   "mostrar": [
-    [
-     "inicio",
-     "fim"
-    ]
-   ],
-   "fundo": true
-  },
   "sol": {
    "corpo": "estrelaG",
    "pos": [
-    -3.1,
+    0,
     0,
     0
    ],
-   "raio": 0.7,
-   "halo": 3.5,
-   "entra": "cresce",
-   "sai": "direto",
-   "mostrar": [
-    [
-     "C1-0.2",
-     "C2.fim+0.3"
-    ]
+   "raio": 0.9,
+   "halo": 3,
+   "brilho": [
+    {
+     "de": "A1.2:apagasse",
+     "ate": "A1.2:apagasse+0.5",
+     "para": 0.05
+    }
    ],
    "fundo": true
   },
-  "luzLua": {
-   "tipo": "luz",
-   "de": "lua",
-   "para": [
-    1.15,
+  "terra": {
+   "corpo": "terra",
+   "raio": 0.5,
+   "girar": 0.25,
+   "orbita": {
+    "em": "sol",
+    "raio": 4.0,
+    "periodo": 90.0,
+    "fase": -0.1111111111111111
+   },
+   "movimentos": [
+    {
+     "de": "C1.2",
+     "ate": "D1",
+     "para": [
+      0.964,
+      0.0,
+      5.158
+     ],
+     "curva": "linear"
+    }
+   ],
+   "sai": "direto",
+   "mostrar": [
+    [
+     "inicio",
+     "D1+0.15"
+    ]
+   ]
+  },
+  "orbita": {
+   "tipo": "orbita",
+   "em": "sol",
+   "raio": 4.0,
+   "tracejada": true,
+   "destaque": true,
+   "fundo": true,
+   "mostrar": [
+    [
+     "inicio",
+     "D1"
+    ]
+   ]
+  },
+  "pulso": {
+   "tipo": "brilho",
+   "pos": [
+    0,
     0,
     0
    ],
-   "raio_ini": 0.3,
-   "raio_fim": 0.95,
-   "cor": "#D8E6FF",
-   "opacidade": 1.0,
+   "raio": 0.35,
+   "cor": "#FFD166",
+   "opacidade": 0.9,
+   "movimentos": [
+    {
+     "de": "A1.2:apagasse",
+     "ate": "C1:acaba",
+     "para": "terra",
+     "curva": "linear"
+    }
+   ],
    "entra": "direto",
    "sai": "direto",
    "mostrar": [
     [
-     "A2-0.1",
-     "A3"
+     "A1.2:apagasse",
+     "C1:acaba"
     ]
-   ]
-  },
-  "manchaLuz": {
-   "tipo": "brilho",
-   "pos": [
-    1.12,
-    0,
-    0
    ],
-   "raio": 0.95,
-   "cor": "#CFE0FF",
+   "fundo": true
+  },
+  "luzSol": {
+   "tipo": "luz",
+   "de": "pulso",
+   "para": "terra",
+   "raio_ini": 0.55,
+   "raio_fim": 0.6,
+   "cor": "#FFD98A",
    "opacidade": 0.55,
    "entra": "direto",
    "sai": "direto",
    "mostrar": [
     [
-     "A2-0.1",
-     "A3"
-    ]
-   ],
-   "fundo": true
-  },
-  "haloLua": {
-   "tipo": "brilho",
-   "em": "lua",
-   "raio": 0.8,
-   "cor": "#CFE0FF",
-   "opacidade": 0.5,
-   "entra": "direto",
-   "sai": "direto",
-   "mostrar": [
-    [
      "inicio",
-     "A3"
-    ],
-    [
-     "B1+0.1",
-     "C2"
+     "C1:acaba"
     ]
    ],
    "fundo": true
   },
-  "agua": {
-   "tipo": "oceano",
-   "em": "terra",
-   "raio": 1.06,
-   "opacidade": 0.62,
-   "luar": "lua",
-   "luar_forca": 1,
-   "escala": [
-    {
-     "de": "B1",
-     "ate": "B1.2",
-     "para": 1.11
-    }
-   ],
-   "realce": [
-    {
-     "de": "A2:mar-0.12",
-     "ate": "A2:mar+0.05",
-     "para": 1,
-     "curva": "suave"
-    },
-    {
-     "de": "A2:mar.fim",
-     "ate": "A2:mar.fim+0.5",
-     "para": 0,
-     "curva": "suave"
-    },
-    {
-     "de": "B1:mar-0.12",
-     "ate": "B1:mar+0.05",
-     "para": 1,
-     "curva": "suave"
-    },
-    {
-     "de": "B1:mar.fim",
-     "ate": "B1:mar.fim+0.5",
-     "para": 0,
-     "curva": "suave"
-    },
-    {
-     "de": "B4:agua-0.12",
-     "ate": "B4:agua+0.05",
-     "para": 1,
-     "curva": "suave"
-    },
-    {
-     "de": "B4:agua.fim",
-     "ate": "B4:agua.fim+0.5",
-     "para": 0,
-     "curva": "suave"
-    },
-    {
-     "de": "B6:mar-0.12",
-     "ate": "B6:mar+0.05",
-     "para": 1,
-     "curva": "suave"
-    },
-    {
-     "de": "B6:mar.fim",
-     "ate": "B6:mar.fim+0.5",
-     "para": 0,
-     "curva": "suave"
-    },
-    {
-     "de": "C2:mare-0.12",
-     "ate": "C2:mare+0.05",
-     "para": 1,
-     "curva": "suave"
-    },
-    {
-     "de": "C2:mare.fim",
-     "ate": "C2:mare.fim+0.5",
-     "para": 0,
-     "curva": "suave"
-    }
-   ],
-   "mares": [
-    {
-     "de": "lua",
-     "amplitude": [
-      {
-       "de": "B4.2-0.2",
-       "ate": "B4.3+0.8",
-       "para": 0.2
-      },
-      {
-       "de": "C2+0.1",
-       "ate": "C2.2+0.7",
-       "para": 0
-      }
-     ]
-    },
-    {
-     "de": "sol",
-     "amplitude": [
-      {
-       "de": "C1+0.2",
-       "ate": "C1.2+0.8",
-       "para": 0.092
-      },
-      {
-       "de": "C2.fim+0.2",
-       "ate": "Q1+0.6",
-       "para": 0
-      }
-     ]
-    }
-   ]
-  },
-  "puxaoCentro": {
+  "seta": {
    "tipo": "seta",
-   "pos": [
-    0.425,
-    0,
-    1.3
-   ],
-   "raio": 0.5,
    "de": [
-    0,
-    0,
-    1.3
+    2.664,
+    0.0,
+    3.065
    ],
    "para": [
-    0.85,
-    0,
-    1.3
+    1.466,
+    0.0,
+    4.54
    ],
+   "pos": [
+    2.065,
+    0.0,
+    3.802
+   ],
+   "raio": 1.0,
    "largura": 0.06,
-   "cor": "#FFE9A8",
-   "desenha": [
-    "B2+0.1",
-    "B2+0.9"
-   ],
-   "mostrar": [
-    [
-     "B2",
-     "B4.2"
-    ]
-   ]
-  },
-  "puxaoPerto": {
-   "tipo": "seta",
-   "pos": [
-    1.5,
-    0,
-    1.3
-   ],
-   "raio": 0.55,
-   "de": [
-    1.0,
-    0,
-    1.3
-   ],
-   "para": [
-    2.0,
-    0,
-    1.3
-   ],
-   "largura": 0.08,
    "cor": "#FFD166",
    "desenha": [
-    "B2.3",
-    "B2.3+0.8"
+    "C1.2",
+    "C1.2.fim"
    ],
    "mostrar": [
     [
-     "B2.3-0.1",
-     "B4.2"
+     "C1.2",
+     "C2.fim"
     ]
    ]
   },
-  "puxaoLonge": {
-   "tipo": "seta",
-   "pos": [
-    -0.65,
-    0,
-    1.3
-   ],
-   "raio": 0.4,
-   "de": [
-    -1.0,
-    0,
-    1.3
-   ],
-   "para": [
-    -0.3,
-    0,
-    1.3
-   ],
-   "largura": 0.045,
-   "cor": "#FFC24A",
-   "desenha": [
-    "B3",
-    "B3+0.8"
-   ],
-   "mostrar": [
-    [
-     "B3-0.1",
-     "B4.2"
-    ]
-   ]
-  },
-  "pino": {
-   "tipo": "pino",
+  "gelo": {
+   "tipo": "casca",
    "em": "terra",
-   "lat": 40,
-   "lon": 90,
-   "oceano": "agua",
-   "tamanho": 0.13,
+   "raio": 0.51,
+   "cor": "#DFF2FF",
+   "opacidade": 0.5,
+   "borda": 1.6,
    "mostrar": [
     [
-     "B5.2-0.1",
-     "C1-0.2"
+     "C2.2",
+     "D1+0.15"
     ]
-   ]
-  },
-  "grafico": {
-   "tipo": "grafico",
-   "pos": [
-    -2.95,
-    0,
-    0
    ],
-   "raio": 1.2,
-   "largura": 2.2,
-   "altura": 0.7,
-   "ciclos": 2,
-   "fundo": true,
-   "ponto": [
+   "sai": "direto"
+  },
+  "geloGrosso": {
+   "tipo": "casca",
+   "em": "terra",
+   "raio": 0.525,
+   "cor": "#F2FAFF",
+   "opacidade": 0.8,
+   "borda": 1.2,
+   "mostrar": [
+    [
+     "C4.2:setenta",
+     "D1+0.15"
+    ]
+   ],
+   "sai": "direto"
+  },
+  "corte": {
+   "tipo": "corte",
+   "modo": "terra",
+   "pos": [
+    0.964,
+    0.0,
+    5.158
+   ],
+   "raio": 0.525,
+   "entra": "direto",
+   "abre": [
+    "D1+0.1",
+    "D1.1.fim"
+   ],
+   "destaque": [
     {
-     "de": "B5",
-     "ate": "B6.fim",
-     "para": 1,
-     "curva": "linear"
+     "nome": "nucleo",
+     "de": "D1.2:calor",
+     "ate": "D1.3",
+     "camadas": [
+      0,
+      1
+     ]
+    },
+    {
+     "nome": "oceano",
+     "de": "D1.3:segura",
+     "ate": "D2.fim",
+     "camadas": [
+      4,
+      4
+     ]
     }
    ],
    "mostrar": [
     [
-     "B5.3",
-     "C1-0.3"
+     "D1",
+     null
     ]
    ]
-  },
-  "setaLua": {
-   "tipo": "seta",
-   "pos": [
-    1.8,
-    0,
-    0
-   ],
-   "raio": 0.5,
-   "de": [
-    1.3,
-    0,
-    0
-   ],
-   "para": [
-    2.3,
-    0,
-    0
-   ],
-   "largura": 0.07,
-   "cor": "#FFD166",
-   "desenha": [
-    "C1:tambem",
-    "C1:tambem+0.4"
-   ],
-   "mostrar": [
-    [
-     "C1:tambem",
-     "C2"
-    ]
-   ]
-  },
-  "setaSol": {
-   "tipo": "seta",
-   "pos": [
-    -1.55,
-    0,
-    0
-   ],
-   "raio": 0.25,
-   "de": [
-    -1.3,
-    0,
-    0
-   ],
-   "para": [
-    -1.76,
-    0,
-    0
-   ],
-   "largura": 0.07,
-   "cor": "#FF9A3D",
-   "desenha": [
-    "C1:puxa",
-    "C1:puxa+0.5"
-   ],
-   "mostrar": [
-    [
-     "C1:puxa",
-     "C2"
-    ]
-   ]
-  },
-  "orbitaLua": {
-   "tipo": "orbita",
-   "em": "terra",
-   "raio": 2.7,
-   "tracejada": true,
-   "destaque": true,
-   "aparece": "Q1",
-   "fundo": true
-  },
-  "vazioLua": {
-   "tipo": "brilho",
-   "pos": [
-    2.7,
-    0,
-    0
-   ],
-   "raio": 0.75,
-   "cor": "#CFE0FF",
-   "opacidade": 0.5,
-   "entra": "cresce",
-   "sai": "direto",
-   "mostrar": [
-    [
-     "Q1.2:falta",
-     "fim"
-    ]
-   ],
-   "fundo": true
   }
  },
  "planos": [
   {
    "de": "inicio",
-   "novo": "a Terra e a Lua juntas",
-   "heroi": "terra",
+   "novo": "o Sol embaixo, a Terra em cima, a luz entre os dois; o Sol apaga",
    "longo": true,
-   "continuo": false,
    "compo": {
-    "x": 0.46,
-    "y": 0.27
+    "x": 0.5,
+    "y": 0.34
    },
    "camera": {
     "de": {
-     "enquadrar": [
-      "terra",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 6,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "sol",
+      "terra"
+     ],
+     "ocupa": 0.62,
+     "az": 40,
+     "el": 30
     },
     "para": {
-     "enquadrar": [
-      "terra",
-      "lua"
-     ],
-     "ocupa": 0.57,
-     "az": 4,
-     "el": 6,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
-    },
-    "curva": "suave"
-   }
-  },
-  {
-   "de": "A2",
-   "novo": "a luz da Lua chega no mar do lado da noite",
-   "heroi": "terra",
-   "longo": true,
-   "continuo": true,
-   "compo": {
-    "x": 0.46,
-    "y": 0.27
-   },
-   "camera": {
-    "de": {
-     "enquadrar": [
-      "terra",
-      "lua"
-     ],
-     "ocupa": 0.57,
-     "az": 4,
-     "el": 6,
+     "so_altura": true,
      "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "para": {
      "enquadrar": [
-      "terra",
-      "lua"
+      "sol",
+      "terra"
      ],
-     "ocupa": 0.56,
-     "az": 12,
-     "el": 8,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "curva": "suave"
-   }
-  },
-  {
-   "de": "A3",
-   "novo": "a Lua some e a luz some com ela: a noite fica escura",
-   "heroi": "terra",
-   "longo": true,
-   "continuo": true,
-   "compo": {
-    "x": 0.46,
-    "y": 0.27
-   },
-   "camera": {
-    "de": {
-     "enquadrar": [
-      "terra",
-      "lua"
-     ],
-     "ocupa": 0.56,
-     "az": 12,
-     "el": 8,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "para": {
-     "enquadrar": [
-      "terra",
-      "lua"
-     ],
-     "ocupa": 0.56,
-     "az": 14,
-     "el": 8,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "curva": "suave"
-   }
-  },
-  {
-   "de": "B1",
-   "novo": "rebobina: a Lua volta e o mar engrossa; a câmera recua",
-   "heroi": "terra",
-   "longo": true,
-   "continuo": true,
-   "compo": {
-    "x": 0.46,
-    "y": 0.27
-   },
-   "camera": {
-    "de": {
-     "enquadrar": [
-      "terra",
-      "lua"
-     ],
-     "ocupa": 0.56,
-     "az": 14,
-     "el": 8,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "para": {
-     "enquadrar": [
-      "terra",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 8,
-     "el": 6,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
+     "ocupa": 0.62,
+     "az": 16.8,
+     "el": 30
     },
     "curva": "meio"
    }
   },
   {
-   "de": "B2",
-   "novo": "a Lua puxa: a seta do centro e a do lado de cá",
-   "heroi": "terra",
-   "longo": true,
+   "de": "B1",
    "continuo": true,
+   "longo": true,
+   "novo": "o fim da luz sobe devagar até a Terra",
    "compo": {
-    "x": 0.46,
-    "y": 0.27
+    "x": 0.5,
+    "y": 0.34
    },
    "camera": {
     "de": {
-     "enquadrar": [
-      "terra",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 8,
-     "el": 6,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "sol",
+      "terra"
+     ],
+     "ocupa": 0.62,
+     "az": 16.8,
+     "el": 30
     },
     "para": {
-     "enquadrar": [
-      "terra",
-      "lua",
-      "puxaoPerto"
-     ],
-     "ocupa": 0.58,
-     "az": 8,
-     "el": 6,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "sol",
+      "terra"
+     ],
+     "ocupa": 0.66,
+     "az": -11.2,
+     "el": 24
     },
     "curva": "meio"
    }
   },
   {
    "de": "B3",
-   "novo": "a seta do lado de lá: as três juntas, de frente",
-   "heroi": "terra",
-   "longo": true,
    "continuo": true,
+   "longo": true,
+   "faixa": false,
+   "novo": "a câmera abre: a órbita inteira em volta do Sol apagado",
    "compo": {
-    "x": 0.46,
-    "y": 0.27
+    "x": 0.5,
+    "y": 0.42
    },
    "camera": {
     "de": {
-     "enquadrar": [
-      "terra",
-      "lua",
-      "puxaoPerto"
-     ],
-     "ocupa": 0.58,
-     "az": 8,
-     "el": 6,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "sol",
+      "terra"
+     ],
+     "ocupa": 0.66,
+     "az": -11.2,
+     "el": 24
     },
     "para": {
-     "enquadrar": [
-      "terra",
-      "lua",
-      "puxaoPerto",
-      "puxaoLonge"
-     ],
-     "ocupa": 0.6,
-     "az": 0,
-     "el": 4,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "orbita"
+     ],
+     "ocupa": 0.5,
+     "az": -14.2,
+     "el": 50
     },
     "curva": "meio"
    }
   },
   {
-   "de": "B4",
-   "novo": "a água se estica dos dois lados",
-   "heroi": "terra",
-   "longo": true,
+   "de": "C1:acaba",
    "continuo": true,
+   "longo": true,
+   "faixa": false,
+   "luz": [
+    -0.272,
+    -0.643,
+    -0.716
+   ],
+   "novo": "a Terra escurece e sai pela seta, em linha reta",
    "compo": {
-    "x": 0.46,
-    "y": 0.27
+    "x": 0.5,
+    "y": 0.42
    },
    "camera": {
     "de": {
-     "enquadrar": [
-      "terra",
-      "lua",
-      "puxaoPerto",
-      "puxaoLonge"
-     ],
-     "ocupa": 0.6,
-     "az": 0,
-     "el": 4,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "orbita"
+     ],
+     "ocupa": 0.5,
+     "az": -14.2,
+     "el": 50
     },
     "para": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 20,
-     "el": 22,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
-    },
-    "curva": "meio"
-   }
-  },
-  {
-   "de": "B5",
-   "novo": "a câmera sobe: a Terra gira e o pino anda em cima da água",
-   "heroi": "terra",
-   "longo": true,
-   "continuo": true,
-   "compo": {
-    "x": 0.46,
-    "y": 0.27
-   },
-   "camera": {
-    "de": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 20,
-     "el": 22,
+     "so_altura": true,
      "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "para": {
      "enquadrar": [
-      "agua",
-      "lua"
+      "orbita",
+      "terra"
      ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 74,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "curva": "meio"
-   }
-  },
-  {
-   "de": "B6",
-   "novo": "a curva da maré: dois altos por volta",
-   "heroi": "terra",
-   "longo": true,
-   "continuo": true,
-   "compo": {
-    "x": 0.46,
-    "y": 0.27
-   },
-   "camera": {
-    "de": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 74,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "para": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 70,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "curva": "meio"
-   }
-  },
-  {
-   "de": "C1",
-   "novo": "o Sol embaixo e o bojo dele, pequeno",
-   "heroi": "terra",
-   "longo": true,
-   "continuo": true,
-   "compo": {
-    "x": 0.46,
-    "y": 0.27
-   },
-   "camera": {
-    "de": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 70,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "para": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 66,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
+     "ocupa": 0.5,
+     "az": -19.2,
+     "el": 48
     },
     "curva": "meio"
    }
   },
   {
    "de": "C2",
-   "novo": "a Lua some: o bojo grande desce e sobra o do Sol",
-   "heroi": "terra",
-   "longo": true,
    "continuo": true,
+   "longo": true,
+   "heroi": "terra",
+   "luz": [
+    -0.256,
+    -0.342,
+    -0.904
+   ],
+   "novo": "a câmera chega na Terra escura",
    "compo": {
     "x": 0.46,
-    "y": 0.27
+    "y": 0.34
    },
    "camera": {
     "de": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 66,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "terra"
+     ],
+     "ocupa": 0.3,
+     "az": -19.2,
+     "el": 40
     },
     "para": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": -10,
-     "el": 52,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "terra"
+     ],
+     "ocupa": 0.4,
+     "az": -7.199999999999999,
+     "el": 30
+    },
+    "curva": "chega"
+   }
+  },
+  {
+   "de": "C3",
+   "continuo": true,
+   "longo": true,
+   "heroi": "terra",
+   "luz": [
+    -0.589,
+    -0.276,
+    -0.76
+   ],
+   "novo": "o gelo cobre a Terra",
+   "compo": {
+    "x": 0.46,
+    "y": 0.34
+   },
+   "camera": {
+    "de": {
+     "roll": 90,
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "terra"
+     ],
+     "ocupa": 0.4,
+     "az": -7.199999999999999,
+     "el": 30
+    },
+    "para": {
+     "roll": 90,
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "terra"
+     ],
+     "ocupa": 0.42,
+     "az": 12.8,
+     "el": 24
+    },
+    "curva": "meio"
+   }
+  },
+  {
+   "de": "D1",
+   "continuo": true,
+   "longo": true,
+   "heroi": "corte",
+   "luz": "camera",
+   "novo": "a Terra se abre: o núcleo quente e o mar por baixo do gelo",
+   "compo": {
+    "x": 0.46,
+    "y": 0.33
+   },
+   "camera": {
+    "de": {
+     "roll": 90,
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "corte"
+     ],
+     "ocupa": 0.42,
+     "az": 12.8,
+     "el": 24
+    },
+    "para": {
+     "roll": 90,
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "corte"
+     ],
+     "ocupa": 0.44,
+     "az": 24.8,
+     "el": 22
     },
     "curva": "meio"
    }
   },
   {
    "de": "Q1",
-   "novo": "a Terra sozinha, com a órbita vazia",
-   "heroi": "terra",
-   "longo": true,
    "continuo": true,
+   "longo": true,
+   "heroi": "corte",
+   "luz": "camera",
+   "novo": "a câmera continua andando em volta",
    "compo": {
     "x": 0.46,
-    "y": 0.27
+    "y": 0.33
    },
    "camera": {
     "de": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": -10,
-     "el": 52,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
+     "so_altura": true,
+     "mm": 35,
+     "enquadrar": [
+      "corte"
+     ],
+     "ocupa": 0.44,
+     "az": 24.8,
+     "el": 22
     },
     "para": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 56,
-     "mm": 35,
      "roll": 90,
-     "so_altura": true
-    },
-    "curva": "meio"
-   }
-  },
-  {
-   "de": "Q1.2",
-   "novo": "a câmera continua chegando (não acaba)",
-   "heroi": "terra",
-   "longo": true,
-   "continuo": true,
-   "compo": {
-    "x": 0.46,
-    "y": 0.27
-   },
-   "camera": {
-    "de": {
-     "enquadrar": [
-      "agua",
-      "lua"
-     ],
-     "ocupa": 0.58,
-     "az": 0,
-     "el": 56,
+     "so_altura": true,
      "mm": 35,
-     "roll": 90,
-     "so_altura": true
-    },
-    "para": {
      "enquadrar": [
-      "agua",
-      "lua"
+      "corte"
      ],
-     "ocupa": 0.5,
-     "az": 8,
-     "el": 44,
-     "mm": 35,
-     "roll": 90,
-     "so_altura": true
+     "ocupa": 0.4,
+     "az": 42.8,
+     "el": 26
     },
     "curva": "meio"
    }
@@ -994,44 +530,35 @@
  "eventos": [
   {
    "tipo": "clarao",
-   "em": "A3",
-   "alvo": "lua",
-   "forca": 0.5,
-   "dur": 0.5,
-   "cor": "azul"
-  },
-  {
-   "tipo": "rebobinar",
-   "em": "B1+0.05",
-   "ate": "B1+0.9"
-  },
-  {
-   "tipo": "clarao",
-   "em": "C2",
-   "alvo": "lua",
-   "forca": 0.5,
-   "dur": 0.5,
-   "cor": "azul"
+   "em": "A1.2:apagasse",
+   "alvo": "sol",
+   "forca": 0.6,
+   "dur": 0.5
   },
   {
    "tipo": "som",
-   "em": "A3",
+   "em": "A1.2:apagasse",
    "nota": "grave"
   },
   {
    "tipo": "som",
-   "em": "B1.2",
+   "em": "A2.2",
    "nota": "plim"
   },
   {
    "tipo": "som",
-   "em": "B6.3",
-   "nota": "plim"
-  },
-  {
-   "tipo": "som",
-   "em": "C2",
+   "em": "C1:acaba",
    "nota": "grave"
+  },
+  {
+   "tipo": "som",
+   "em": "C2.2:frio",
+   "nota": "plim"
+  },
+  {
+   "tipo": "som",
+   "em": "D1.2:calor",
+   "nota": "tique"
   },
   {
    "tipo": "som",
