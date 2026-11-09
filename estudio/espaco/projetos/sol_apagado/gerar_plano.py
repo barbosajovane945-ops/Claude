@@ -1,6 +1,15 @@
 import json, math
 R, P, A0 = 4.0, 90.0, -40.0
-TC, TD = 19.77, 31.93            # C1.2 (sai da curva) e D1
+import os
+LIN = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)) if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'linhas.json')) else '/home/user/Claude/estudio/espaco/projetos/sol_apagado', 'linhas.json')))
+FALA = {l['id']: l for l in LIN['linhas']}
+def tp(ref):   # "C1", "C1.2" ou "C1:acaba" -> segundos (os mesmos tempos da voz)
+    if ':' in ref:
+        f, w = ref.split(':'); return next(p['t0'] for pd in FALA[f]['pedacos'] for p in pd['palavras'] if p['t'].lower().startswith(w))
+    if '.' in ref:
+        f, k = ref.split('.'); return FALA[f]['pedacos'][int(k) - 1]['t0']
+    return FALA[ref]['t0']
+TC, TD = tp("C1.2"), tp("D1")      # sai da curva; a Terra se abre
 def pos(t):
     a = math.radians(A0 + 360*t/P); return [R*math.cos(a), 0, R*math.sin(a)], a
 p0, a = pos(TC)
@@ -30,8 +39,9 @@ objetos = {
  "seta": {"tipo": "seta", "de": r3(sa), "para": r3(sb), "pos": r3(sm), "raio": 1.0, "largura": 0.06,
           "cor": "#FFD166", "desenha": ["C1.2", "C1.2.fim"], "mostrar": [["C1.2", "C2.fim"]]},
  "breu": {"tipo": "brilho", "pos": [0, -2200, -500], "raio": 0.01, "opacidade": 0},
- "praia": {"tipo": "praia", "pos": [0, -2000, 0], "luar": "breu", "ambiente": 0.16, "lampada": False,
-           "regua": {"x": 400, "z": -300, "altura": 1}, "mostrar": [["C2-0.05", "D1"]], "entra": "direto", "sai": "direto"},
+ "praia": {"tipo": "praia", "pos": [0, -2000, 0], "luar": "luaCeu", "ambiente": 0.16, "lampada": False,
+           "regua": {"x": 400, "z": -300, "altura": 1}, "mostrar": [["L1-0.05", "D1"]], "entra": "direto", "sai": "direto"},
+ "luaCeu": {"corpo": "lua", "pos": [9, -1984, -70], "raio": 2.6, "girar": 0, "entra": "direto", "sai": "direto", "mostrar": [["L1-0.05", "L1:apaga.fim"]]},
  "corte": {"tipo": "corte", "modo": "terra", "pos": r3(pf), "raio": RT*1.05, "entra": "direto",
            "abre": ["D1+0.1", "D1.1.fim"],
            "destaque": [{"nome": "nucleo", "de": "D1.2:calor", "ate": "D1.3", "camadas": [0, 1]},
@@ -47,7 +57,7 @@ def sph(azd, eld):
     return [m.sin(a)*m.cos(e), m.sin(e), m.cos(a)*m.cos(e)]
 def contraluz(azd, eld):   # luz vindo de trás da Terra (só uma borda fina acesa)
     c = sph(azd + 35, eld - 10); return [round(-x, 3) for x in c]
-T = {"B1": 5.81, "B3": 12.81, "acaba": 19.15, "C2": 22.76, "C3": 24.71, "D1": 31.93}
+T = {k: tp(k) for k in ["B1", "B3", "D1"]}
 planos = [
  {"de": "inicio", "novo": "o Sol embaixo, a Terra em cima, a luz entre os dois; o Sol apaga", "longo": True,
   "compo": {"x": 0.5, "y": 0.34},
@@ -59,8 +69,13 @@ planos = [
  {"de": "C1:acaba", "continuo": True, "longo": True, "faixa": False, "luz": contraluz(az(T["B3"]) - 3, 50), "novo": "a Terra escurece e sai pela seta, em linha reta", "compo": {"x": 0.5, "y": 0.42},
   "camera": {"de": cam(enquadrar=["orbita"], ocupa=0.5, az=az(T["B3"]) - 3, el=50), "para": cam(enquadrar=["orbita", "terra"], ocupa=0.5, az=az(T["B3"]) - 8, el=48), "curva": "meio"}},
 
- {"de": "C2", "novo": "do chão: céu preto, só estrelas, nenhuma Lua; o mar ainda mexe", "longo": True, "luz": "camera", "borrao": False,
-  "camera": {"de": {"em": "praia", "pos": [0, 2.6, 15], "alvo": [0, 3.2, -40], "mm": 24}, "para": {"em": "praia", "pos": [0.3, 2.4, 13], "alvo": [0, 2.6, -40], "mm": 24}, "curva": "meio"}},
+
+ {"de": "L1", "novo": "do chão: a Lua no céu deixa o mar prateado, e apaga", "longo": True, "luz": "camera", "borrao": False,
+  "camera": {"de": {"em": "praia", "pos": [0, 2.6, 15], "alvo": [6, 9, -60], "mm": 24}, "para": {"em": "praia", "pos": [0.3, 2.5, 14], "alvo": [4, 7, -60], "mm": 24}, "curva": "meio"}},
+ {"de": "M1", "continuo": True, "longo": True, "luz": "camera", "borrao": False, "novo": "a câmera vira para o horizonte: a manhã não chega",
+  "camera": {"de": {"em": "praia", "pos": [0.3, 2.5, 14], "alvo": [4, 7, -60], "mm": 24}, "para": {"em": "praia", "pos": [0.4, 2.5, 13.5], "alvo": [-30, 3.0, -50], "mm": 24}, "curva": "meio"}},
+ {"de": "C2", "continuo": True, "longo": True, "luz": "camera", "borrao": False, "novo": "de volta ao mar escuro: céu preto, só estrelas",
+  "camera": {"de": {"em": "praia", "pos": [0.4, 2.5, 13.5], "alvo": [-30, 3.0, -50], "mm": 24}, "para": {"em": "praia", "pos": [0.3, 2.4, 13], "alvo": [0, 2.6, -40], "mm": 24}, "curva": "meio"}},
  {"de": "C3", "continuo": True, "longo": True, "luz": "camera", "borrao": False, "novo": "o mar para de mexer e a geada cobre a areia",
   "camera": {"de": {"em": "praia", "pos": [0.3, 2.4, 13], "alvo": [0, 2.6, -40], "mm": 24}, "para": {"em": "praia", "pos": [0.8, 1.9, 10], "alvo": [0, 0.6, -40], "mm": 24}, "curva": "meio"}},
  {"de": "C4", "continuo": True, "longo": True, "luz": "camera", "borrao": False, "novo": "o mar inteiro virou gelo; a câmera levanta para o céu vazio",
@@ -75,6 +90,7 @@ eventos = [
  {"tipo": "som", "em": "A1.2:apagasse", "nota": "grave"},
  {"tipo": "som", "em": "A2.2", "nota": "plim"},
  {"tipo": "som", "em": "C1:acaba", "nota": "grave"},
+ {"tipo": "som", "em": "L1:apaga", "nota": "tique"},
  {"tipo": "som", "em": "C2.2:frio", "nota": "plim"},
  {"tipo": "som", "em": "C4.2:setenta", "nota": "grave"},
  {"tipo": "som", "em": "D1.2:calor", "nota": "tique"},

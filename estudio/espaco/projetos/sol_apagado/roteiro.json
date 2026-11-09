@@ -8,7 +8,8 @@
   "Estimativa de David Stevenson (Caltech): sem o Sol, a temperatura média da superfície cairia a uns −18 °C em uma semana e a uns −73 °C em um ano. São estimativas, não medidas.",
   "O gelo na superfície isola o oceano por baixo, e o calor interno da Terra manteria água líquida no fundo por muito tempo (Stevenson fala em centenas de milhares a milhões de anos).",
   "Fontes hidrotermais no fundo do mar têm vida que se alimenta de química, não de luz (quimiossíntese), descobertas em 1977 no Rifte de Galápagos.",
-  "Na realidade o Sol não tem como apagar de uma vez: daqui a uns 5 bilhões de anos ele incha e vira uma gigante vermelha. O vídeo é uma hipótese."
+  "Na realidade o Sol não tem como apagar de uma vez: daqui a uns 5 bilhões de anos ele incha e vira uma gigante vermelha. O vídeo é uma hipótese.",
+  "A Lua não tem luz própria: só reflete a luz do Sol. Sem o Sol, ela apaga uns segundos depois que a última luz passa pela Terra (a luz leva cerca de 1,3 s da Lua até nós)."
  ],
  "voz_guia": {
   "mac": "Luciana",
@@ -49,6 +50,15 @@
    ]
   },
   {
+   "id": "B5",
+   "pausa": 0.4,
+   "pedacos": [
+    "Todo dia,|luzSol",
+    "o Sol que você vê|luzSol,pulso",
+    "já é de *oito minutos* atrás.|luzSol"
+   ]
+  },
+  {
    "id": "B3",
    "pausa": 0.35,
    "pedacos": [
@@ -65,6 +75,25 @@
     "Aí a luz *acaba*,|terra",
     "e a Terra sai da curva|terra,seta",
     "em *linha reta*.|seta,terra"
+   ]
+  },
+  {
+   "id": "L1",
+   "pausa": 0.35,
+   "pedacos": [
+    "E a *Lua* apaga junto,|luaCeu,praia",
+    "porque ela só brilha|praia",
+    "com a luz do Sol.|praia"
+   ]
+  },
+  {
+   "id": "M1",
+   "pausa": 0.45,
+   "pedacos": [
+    "E de manhã,|praia",
+    "o Sol não *nasce*.|praia",
+    "É noite em todo lugar,|praia",
+    "o tempo todo.|praia"
    ]
   },
   {

@@ -40,9 +40,9 @@
      "de": "C1.2",
      "ate": "D1",
      "para": [
-      0.964,
+      -2.783,
       0.0,
-      5.158
+      6.723
      ],
      "curva": "linear"
     }
@@ -118,19 +118,19 @@
   "seta": {
    "tipo": "seta",
    "de": [
-    2.664,
+    1.667,
     0.0,
-    3.065
+    3.703
    ],
    "para": [
-    1.466,
+    0.095,
     0.0,
-    4.54
+    4.77
    ],
    "pos": [
-    2.065,
+    0.881,
     0.0,
-    3.802
+    4.236
    ],
    "raio": 1.0,
    "largura": 0.06,
@@ -163,7 +163,7 @@
     -2000,
     0
    ],
-   "luar": "breu",
+   "luar": "luaCeu",
    "ambiente": 0.16,
    "lampada": false,
    "regua": {
@@ -173,20 +173,38 @@
    },
    "mostrar": [
     [
-     "C2-0.05",
+     "L1-0.05",
      "D1"
     ]
    ],
    "entra": "direto",
    "sai": "direto"
   },
+  "luaCeu": {
+   "corpo": "lua",
+   "pos": [
+    9,
+    -1984,
+    -70
+   ],
+   "raio": 2.6,
+   "girar": 0,
+   "entra": "direto",
+   "sai": "direto",
+   "mostrar": [
+    [
+     "L1-0.05",
+     "L1:apaga.fim"
+    ]
+   ]
+  },
   "corte": {
    "tipo": "corte",
    "modo": "terra",
    "pos": [
-    0.964,
+    -2.783,
     0.0,
-    5.158
+    6.723
    ],
    "raio": 0.525,
    "entra": "direto",
@@ -290,7 +308,7 @@
       "terra"
      ],
      "ocupa": 0.66,
-     "az": -11.2,
+     "az": -28.0,
      "el": 24
     },
     "curva": "meio"
@@ -316,7 +334,7 @@
       "terra"
      ],
      "ocupa": 0.66,
-     "az": -11.2,
+     "az": -28.0,
      "el": 24
     },
     "para": {
@@ -327,7 +345,7 @@
       "orbita"
      ],
      "ocupa": 0.5,
-     "az": -14.2,
+     "az": -31.0,
      "el": 50
     },
     "curva": "meio"
@@ -339,9 +357,9 @@
    "longo": true,
    "faixa": false,
    "luz": [
-    -0.272,
+    -0.053,
     -0.643,
-    -0.716
+    -0.764
    ],
    "novo": "a Terra escurece e sai pela seta, em linha reta",
    "compo": {
@@ -357,7 +375,7 @@
       "orbita"
      ],
      "ocupa": 0.5,
-     "az": -14.2,
+     "az": -31.0,
      "el": 50
     },
     "para": {
@@ -369,15 +387,15 @@
       "terra"
      ],
      "ocupa": 0.5,
-     "az": -19.2,
+     "az": -36.0,
      "el": 48
     },
     "curva": "meio"
    }
   },
   {
-   "de": "C2",
-   "novo": "do chão: céu preto, só estrelas, nenhuma Lua; o mar ainda mexe",
+   "de": "L1",
+   "novo": "do chão: a Lua no céu deixa o mar prateado, e apaga",
    "longo": true,
    "luz": "camera",
    "borrao": false,
@@ -390,9 +408,87 @@
       15
      ],
      "alvo": [
-      0,
-      3.2,
-      -40
+      6,
+      9,
+      -60
+     ],
+     "mm": 24
+    },
+    "para": {
+     "em": "praia",
+     "pos": [
+      0.3,
+      2.5,
+      14
+     ],
+     "alvo": [
+      4,
+      7,
+      -60
+     ],
+     "mm": 24
+    },
+    "curva": "meio"
+   }
+  },
+  {
+   "de": "M1",
+   "continuo": true,
+   "longo": true,
+   "luz": "camera",
+   "borrao": false,
+   "novo": "a câmera vira para o horizonte: a manhã não chega",
+   "camera": {
+    "de": {
+     "em": "praia",
+     "pos": [
+      0.3,
+      2.5,
+      14
+     ],
+     "alvo": [
+      4,
+      7,
+      -60
+     ],
+     "mm": 24
+    },
+    "para": {
+     "em": "praia",
+     "pos": [
+      0.4,
+      2.5,
+      13.5
+     ],
+     "alvo": [
+      -30,
+      3.0,
+      -50
+     ],
+     "mm": 24
+    },
+    "curva": "meio"
+   }
+  },
+  {
+   "de": "C2",
+   "continuo": true,
+   "longo": true,
+   "luz": "camera",
+   "borrao": false,
+   "novo": "de volta ao mar escuro: céu preto, só estrelas",
+   "camera": {
+    "de": {
+     "em": "praia",
+     "pos": [
+      0.4,
+      2.5,
+      13.5
+     ],
+     "alvo": [
+      -30,
+      3.0,
+      -50
      ],
      "mm": 24
     },
@@ -511,7 +607,7 @@
       "corte"
      ],
      "ocupa": 0.42,
-     "az": 12.8,
+     "az": -4.0,
      "el": 24
     },
     "para": {
@@ -522,7 +618,7 @@
       "corte"
      ],
      "ocupa": 0.44,
-     "az": 24.8,
+     "az": 8.0,
      "el": 22
     },
     "curva": "meio"
@@ -548,7 +644,7 @@
       "corte"
      ],
      "ocupa": 0.44,
-     "az": 24.8,
+     "az": 8.0,
      "el": 22
     },
     "para": {
@@ -559,7 +655,7 @@
       "corte"
      ],
      "ocupa": 0.4,
-     "az": 42.8,
+     "az": 26.0,
      "el": 26
     },
     "curva": "meio"
@@ -588,6 +684,11 @@
    "tipo": "som",
    "em": "C1:acaba",
    "nota": "grave"
+  },
+  {
+   "tipo": "som",
+   "em": "L1:apaga",
+   "nota": "tique"
   },
   {
    "tipo": "som",
