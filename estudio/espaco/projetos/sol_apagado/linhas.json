@@ -598,7 +598,7 @@
      "bruto": "Mas o pior",
      "ouro": [],
      "ver": [
-      "terra"
+      "praia"
      ],
      "t0": 22.762,
      "t1": 23.451,
@@ -627,8 +627,7 @@
       "frio"
      ],
      "ver": [
-      "terra",
-      "gelo"
+      "praia"
      ],
      "t0": 23.451,
      "t1": 23.977,
@@ -666,7 +665,7 @@
      "bruto": "Em uma semana,",
      "ouro": [],
      "ver": [
-      "gelo"
+      "praia"
      ],
      "t0": 24.712,
      "t1": 25.551,
@@ -693,8 +692,8 @@
      "bruto": "a Terra inteira fica",
      "ouro": [],
      "ver": [
-      "gelo",
-      "terra"
+      "praia",
+      "gelo"
      ],
      "t0": 25.551,
      "t1": 26.96,

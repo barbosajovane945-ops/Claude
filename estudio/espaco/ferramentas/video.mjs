@@ -4,7 +4,7 @@
 //   npm run video -- voz <nome>                        voz-guia grátis e os tempos de cada palavra (linhas.json)
 //   npm run video -- quadros <nome> --t 1,4,8          quadros soltos (para posicionar câmera e objetos)
 //   npm run video -- estilos <nome> --t 4              o mesmo quadro em cada estilo de design, lado a lado
-//   npm run video -- rascunho <nome>                   animática leve (540x960, 12 qps) com voz-guia, conferência e folha de contato
+//   npm run video -- rascunho <nome>                   animática leve (540x960, 12 qps; --qps 24 para ver liso) com voz-guia, conferência e folha de contato
 //   npm run video -- conferir <nome>                   só a conferência do último render
 //   npm run video -- voz-final <nome> [--confirmo]     voz da ElevenLabs com a chave da pessoa (custa créditos; sem --confirmo só mostra o custo)
 //   npm run video -- final <nome>                      1080x1920, 24 qps, conferência e mixagem a -14 LUFS, pasta de entrega
@@ -109,7 +109,7 @@ else if (cmd === 'quadros') {
   console.log(`estilos lado a lado (${Object.keys(ESTILOS).join(', ')}): projetos/${nome}/saida/estilos.jpg`);
 } else if (cmd === 'rascunho') {
   vozEmDia(pasta);
-  const est = renderVideo(pasta, { w: 540, h: 960, fps: 12, base: 'rascunho' });
+  const est = renderVideo(pasta, { w: 540, h: 960, fps: +(A.qps || 12), base: 'rascunho' });
   console.log(`\nrascunho pronto (estilo ${est}): projetos/${nome}/saida/rascunho.mp4, folha em saida/folha.jpg, conferência em CONFERENCIA.md`);
 } else if (cmd === 'conferir') {
   // confere o último render (rascunho ou final, o mais novo), com a comparação de planos seguidos

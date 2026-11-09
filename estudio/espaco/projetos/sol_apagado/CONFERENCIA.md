@@ -1,6 +1,6 @@
 # Conferência: E se o Sol apagasse?
 
-Análise de 537 quadros a 12 qps (44.8 s).
+Análise de 1073 quadros a 24 qps (44.7 s).
 
 ## Frase → imagem
 
@@ -22,15 +22,15 @@ Análise de 537 quadros a 12 qps (44.8 s).
 | C1.1 | Aí a luz acaba, | terra | terra 100% | ok |
 | C1.2 | e a Terra sai da curva | terra, seta | terra 100%, seta 100% | ok |
 | C1.3 | em linha reta. | seta, terra | seta 100%, terra 100% | ok |
-| C2.1 | Mas o pior | terra | terra 100% | ok |
-| C2.2 | é o frio. | terra, gelo | terra 100%, gelo 83% | ok |
-| C3.1 | Em uma semana, | gelo | gelo 100% | ok |
-| C3.2 | a Terra inteira fica | gelo, terra | gelo 100%, terra 100% | ok |
+| C2.1 | Mas o pior | praia | praia 100% | ok |
+| C2.2 | é o frio. | praia | praia 100% | ok |
+| C3.1 | Em uma semana, | praia | praia 100% | ok |
+| C3.2 | a Terra inteira fica | praia, gelo | praia 100%, gelo 79% | ok |
 | C3.3 | abaixo de zero. | gelo | gelo 100% | ok |
 | C4.1 | Em um ano, | gelo | gelo 100% | ok |
 | C4.2 | uns setenta graus negativos. | gelo | gelo 100% | ok |
 | D1.1 | Mas no fundo do mar, | corte | corte 100% | ok |
-| D1.2 | o calor de dentro da Terra | corte, nucleo | corte 100%, nucleo 65% | ok |
+| D1.2 | o calor de dentro da Terra | corte, nucleo | corte 100%, nucleo 63% | ok |
 | D1.3 | segura a água líquida. | corte, oceano | corte 100%, oceano 88% | ok |
 | D2.1 | E tem vida ali | corte | corte 100% | ok |
 | D2.2 | que nunca precisou do Sol. | corte | corte 100% | ok |
@@ -45,11 +45,12 @@ Análise de 537 quadros a 12 qps (44.8 s).
 | p01 | 0.00 | 5.83 | o Sol embaixo, a Terra em cima, a luz entre os dois; o Sol apaga | — | ok |
 | p02 | 5.83 | 7.00 | o fim da luz sobe devagar até a Terra | — | ok |
 | p03 | 12.83 | 6.58 | a câmera abre: a órbita inteira em volta do Sol apagado | — | ok |
-| p04 | 19.42 | 3.42 | a Terra escurece e sai pela seta, em linha reta | — | ok |
-| p05 | 22.83 | 1.92 | a câmera chega na Terra escura | terra 28% da altura | ok |
-| p06 | 24.75 | 7.25 | o gelo cobre a Terra | terra 37% da altura | ok |
-| p07 | 32.00 | 8.00 | a Terra se abre: o núcleo quente e o mar por baixo do gelo | corte 39% da altura | ok |
-| p08 | 40.00 | 4.75 | a câmera continua andando em volta | corte 41% da altura | ok |
+| p04 | 19.42 | 3.38 | a Terra escurece e sai pela seta, em linha reta | — | ok |
+| p05 | 22.79 | 1.96 | do chão: céu preto, só estrelas, nenhuma Lua; o mar ainda mexe | — | ok |
+| p06 | 24.75 | 3.79 | o mar para de mexer e a geada cobre a areia | — | ok |
+| p07 | 28.54 | 3.42 | o mar inteiro virou gelo; a câmera levanta para o céu vazio | — | ok |
+| p08 | 31.96 | 8.00 | a Terra se abre: o núcleo quente e o mar por baixo do gelo | corte 39% da altura | ok |
+| p09 | 39.96 | 4.75 | a câmera continua andando em volta | corte 41% da altura | ok |
 
 ## Resultado
 

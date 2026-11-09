@@ -5,6 +5,7 @@
  "luz": {
   "de": "sol"
  },
+ "extra": "extra.js",
  "objetos": {
   "sol": {
    "corpo": "estrelaG",
@@ -145,34 +146,38 @@
     ]
    ]
   },
-  "gelo": {
-   "tipo": "casca",
-   "em": "terra",
-   "raio": 0.51,
-   "cor": "#DFF2FF",
-   "opacidade": 0.5,
-   "borda": 1.6,
-   "mostrar": [
-    [
-     "C2.2",
-     "D1+0.15"
-    ]
+  "breu": {
+   "tipo": "brilho",
+   "pos": [
+    0,
+    -2200,
+    -500
    ],
-   "sai": "direto"
+   "raio": 0.01,
+   "opacidade": 0
   },
-  "geloGrosso": {
-   "tipo": "casca",
-   "em": "terra",
-   "raio": 0.525,
-   "cor": "#F2FAFF",
-   "opacidade": 0.8,
-   "borda": 1.2,
+  "praia": {
+   "tipo": "praia",
+   "pos": [
+    0,
+    -2000,
+    0
+   ],
+   "luar": "breu",
+   "ambiente": 0.16,
+   "lampada": false,
+   "regua": {
+    "x": 400,
+    "z": -300,
+    "altura": 1
+   },
    "mostrar": [
     [
-     "C4.2:setenta",
-     "D1+0.15"
+     "C2-0.05",
+     "D1"
     ]
    ],
+   "entra": "direto",
    "sai": "direto"
   },
   "corte": {
@@ -372,82 +377,116 @@
   },
   {
    "de": "C2",
-   "continuo": true,
+   "novo": "do chão: céu preto, só estrelas, nenhuma Lua; o mar ainda mexe",
    "longo": true,
-   "heroi": "terra",
-   "luz": [
-    -0.256,
-    -0.342,
-    -0.904
-   ],
-   "novo": "a câmera chega na Terra escura",
-   "compo": {
-    "x": 0.46,
-    "y": 0.34
-   },
+   "luz": "camera",
+   "borrao": false,
    "camera": {
     "de": {
-     "roll": 90,
-     "so_altura": true,
-     "mm": 35,
-     "enquadrar": [
-      "terra"
+     "em": "praia",
+     "pos": [
+      0,
+      2.6,
+      15
      ],
-     "ocupa": 0.3,
-     "az": -19.2,
-     "el": 40
+     "alvo": [
+      0,
+      3.2,
+      -40
+     ],
+     "mm": 24
     },
     "para": {
-     "roll": 90,
-     "so_altura": true,
-     "mm": 35,
-     "enquadrar": [
-      "terra"
+     "em": "praia",
+     "pos": [
+      0.3,
+      2.4,
+      13
      ],
-     "ocupa": 0.4,
-     "az": -7.199999999999999,
-     "el": 30
+     "alvo": [
+      0,
+      2.6,
+      -40
+     ],
+     "mm": 24
     },
-    "curva": "chega"
+    "curva": "meio"
    }
   },
   {
    "de": "C3",
    "continuo": true,
    "longo": true,
-   "heroi": "terra",
-   "luz": [
-    -0.589,
-    -0.276,
-    -0.76
-   ],
-   "novo": "o gelo cobre a Terra",
-   "compo": {
-    "x": 0.46,
-    "y": 0.34
-   },
+   "luz": "camera",
+   "borrao": false,
+   "novo": "o mar para de mexer e a geada cobre a areia",
    "camera": {
     "de": {
-     "roll": 90,
-     "so_altura": true,
-     "mm": 35,
-     "enquadrar": [
-      "terra"
+     "em": "praia",
+     "pos": [
+      0.3,
+      2.4,
+      13
      ],
-     "ocupa": 0.4,
-     "az": -7.199999999999999,
-     "el": 30
+     "alvo": [
+      0,
+      2.6,
+      -40
+     ],
+     "mm": 24
     },
     "para": {
-     "roll": 90,
-     "so_altura": true,
-     "mm": 35,
-     "enquadrar": [
-      "terra"
+     "em": "praia",
+     "pos": [
+      0.8,
+      1.9,
+      10
      ],
-     "ocupa": 0.42,
-     "az": 12.8,
-     "el": 24
+     "alvo": [
+      0,
+      0.6,
+      -40
+     ],
+     "mm": 24
+    },
+    "curva": "meio"
+   }
+  },
+  {
+   "de": "C4",
+   "continuo": true,
+   "longo": true,
+   "luz": "camera",
+   "borrao": false,
+   "novo": "o mar inteiro virou gelo; a câmera levanta para o céu vazio",
+   "camera": {
+    "de": {
+     "em": "praia",
+     "pos": [
+      0.8,
+      1.9,
+      10
+     ],
+     "alvo": [
+      0,
+      0.6,
+      -40
+     ],
+     "mm": 24
+    },
+    "para": {
+     "em": "praia",
+     "pos": [
+      1.0,
+      2.6,
+      8.5
+     ],
+     "alvo": [
+      0,
+      7,
+      -40
+     ],
+     "mm": 24
     },
     "curva": "meio"
    }
@@ -554,6 +593,11 @@
    "tipo": "som",
    "em": "C2.2:frio",
    "nota": "plim"
+  },
+  {
+   "tipo": "som",
+   "em": "C4.2:setenta",
+   "nota": "grave"
   },
   {
    "tipo": "som",

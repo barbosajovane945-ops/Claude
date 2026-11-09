@@ -20,6 +20,7 @@ const plano = lerJson(path.join(pasta, 'plano.json'));
 if (!ana.length) { console.error('análise vazia'); process.exit(1); }
 const fps = ana.length > 1 ? Math.round(1 / (ana[1].t - ana[0].t)) : 12;
 const nomesValidos = new Set([...Object.keys(plano.objetos || {}), ...(plano.eventos || []).map((e) => e.nome || e.tipo), ...Object.values(plano.objetos || {}).flatMap((o) => (Array.isArray(o.destaque) ? o.destaque : []).map((d) => d.nome).filter(Boolean))]);
+for (const q of ana) for (const k of Object.keys(q.objs || {})) nomesValidos.add(k); // nomes registrados pelo extra.js (registrar) também valem
 
 const alertas = [], avisos = [];
 const linhas = ['# Conferência: ' + (plano.titulo || nome), '', `Análise de ${ana.length} quadros a ${fps} qps (${(ana.length / fps).toFixed(1)} s).`, ''];

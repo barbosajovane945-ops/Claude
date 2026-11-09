@@ -29,10 +29,9 @@ objetos = {
             "mostrar": [["inicio", "C1:acaba"]], "fundo": True},
  "seta": {"tipo": "seta", "de": r3(sa), "para": r3(sb), "pos": r3(sm), "raio": 1.0, "largura": 0.06,
           "cor": "#FFD166", "desenha": ["C1.2", "C1.2.fim"], "mostrar": [["C1.2", "C2.fim"]]},
- "gelo": {"tipo": "casca", "em": "terra", "raio": RT*1.02, "cor": "#DFF2FF", "opacidade": 0.5, "borda": 1.6,
-          "mostrar": [["C2.2", "D1+0.15"]], "sai": "direto"},
- "geloGrosso": {"tipo": "casca", "em": "terra", "raio": RT*1.05, "cor": "#F2FAFF", "opacidade": 0.8, "borda": 1.2,
-          "mostrar": [["C4.2:setenta", "D1+0.15"]], "sai": "direto"},
+ "breu": {"tipo": "brilho", "pos": [0, -2200, -500], "raio": 0.01, "opacidade": 0},
+ "praia": {"tipo": "praia", "pos": [0, -2000, 0], "luar": "breu", "ambiente": 0.16, "lampada": False,
+           "regua": {"x": 400, "z": -300, "altura": 1}, "mostrar": [["C2-0.05", "D1"]], "entra": "direto", "sai": "direto"},
  "corte": {"tipo": "corte", "modo": "terra", "pos": r3(pf), "raio": RT*1.05, "entra": "direto",
            "abre": ["D1+0.1", "D1.1.fim"],
            "destaque": [{"nome": "nucleo", "de": "D1.2:calor", "ate": "D1.3", "camadas": [0, 1]},
@@ -59,10 +58,13 @@ planos = [
   "camera": {"de": cam(enquadrar=G, ocupa=0.66, az=az(T["B3"]), el=24), "para": cam(enquadrar=["orbita"], ocupa=0.5, az=az(T["B3"]) - 3, el=50), "curva": "meio"}},
  {"de": "C1:acaba", "continuo": True, "longo": True, "faixa": False, "luz": contraluz(az(T["B3"]) - 3, 50), "novo": "a Terra escurece e sai pela seta, em linha reta", "compo": {"x": 0.5, "y": 0.42},
   "camera": {"de": cam(enquadrar=["orbita"], ocupa=0.5, az=az(T["B3"]) - 3, el=50), "para": cam(enquadrar=["orbita", "terra"], ocupa=0.5, az=az(T["B3"]) - 8, el=48), "curva": "meio"}},
- {"de": "C2", "continuo": True, "longo": True, "heroi": "terra", "luz": contraluz(az(T["B3"]) - 8, 30), "novo": "a câmera chega na Terra escura", "compo": {"x": 0.46, "y": 0.34},
-  "camera": {"de": cam(enquadrar=["terra"], ocupa=0.3, az=az(T["B3"]) - 8, el=40), "para": cam(enquadrar=["terra"], ocupa=0.4, az=az(T["B3"]) + 4, el=30), "curva": "chega"}},
- {"de": "C3", "continuo": True, "longo": True, "heroi": "terra", "luz": contraluz(az(T["B3"]) + 14, 26), "novo": "o gelo cobre a Terra", "compo": {"x": 0.46, "y": 0.34},
-  "camera": {"de": cam(enquadrar=["terra"], ocupa=0.4, az=az(T["B3"]) + 4, el=30), "para": cam(enquadrar=["terra"], ocupa=0.42, az=az(T["B3"]) + 24, el=24), "curva": "meio"}},
+
+ {"de": "C2", "novo": "do chão: céu preto, só estrelas, nenhuma Lua; o mar ainda mexe", "longo": True, "luz": "camera", "borrao": False,
+  "camera": {"de": {"em": "praia", "pos": [0, 2.6, 15], "alvo": [0, 3.2, -40], "mm": 24}, "para": {"em": "praia", "pos": [0.3, 2.4, 13], "alvo": [0, 2.6, -40], "mm": 24}, "curva": "meio"}},
+ {"de": "C3", "continuo": True, "longo": True, "luz": "camera", "borrao": False, "novo": "o mar para de mexer e a geada cobre a areia",
+  "camera": {"de": {"em": "praia", "pos": [0.3, 2.4, 13], "alvo": [0, 2.6, -40], "mm": 24}, "para": {"em": "praia", "pos": [0.8, 1.9, 10], "alvo": [0, 0.6, -40], "mm": 24}, "curva": "meio"}},
+ {"de": "C4", "continuo": True, "longo": True, "luz": "camera", "borrao": False, "novo": "o mar inteiro virou gelo; a câmera levanta para o céu vazio",
+  "camera": {"de": {"em": "praia", "pos": [0.8, 1.9, 10], "alvo": [0, 0.6, -40], "mm": 24}, "para": {"em": "praia", "pos": [1.0, 2.6, 8.5], "alvo": [0, 7, -40], "mm": 24}, "curva": "meio"}},
  {"de": "D1", "continuo": True, "longo": True, "heroi": "corte", "luz": "camera", "novo": "a Terra se abre: o núcleo quente e o mar por baixo do gelo", "compo": {"x": 0.46, "y": 0.33},
   "camera": {"de": cam(enquadrar=["corte"], ocupa=0.42, az=az(T["B3"]) + 24, el=24), "para": cam(enquadrar=["corte"], ocupa=0.44, az=az(T["B3"]) + 36, el=22), "curva": "meio"}},
  {"de": "Q1", "continuo": True, "longo": True, "heroi": "corte", "luz": "camera", "novo": "a câmera continua andando em volta", "compo": {"x": 0.46, "y": 0.33},
@@ -74,10 +76,11 @@ eventos = [
  {"tipo": "som", "em": "A2.2", "nota": "plim"},
  {"tipo": "som", "em": "C1:acaba", "nota": "grave"},
  {"tipo": "som", "em": "C2.2:frio", "nota": "plim"},
+ {"tipo": "som", "em": "C4.2:setenta", "nota": "grave"},
  {"tipo": "som", "em": "D1.2:calor", "nota": "tique"},
  {"tipo": "som", "em": "Q1", "nota": "plim"},
 ]
 plano = {"titulo": "E se o Sol apagasse?", "estilo": "vivo", "cauda": 1.7, "luz": {"de": "sol"},
-         "objetos": objetos, "planos": planos, "eventos": eventos}
+         "extra": "extra.js", "objetos": objetos, "planos": planos, "eventos": eventos}
 json.dump(plano, open('plano.json', 'w'), ensure_ascii=False, indent=1)
 print("p0", r3(p0), "pf", r3(pf))

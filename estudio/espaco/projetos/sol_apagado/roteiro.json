@@ -71,16 +71,16 @@
    "id": "C2",
    "pausa": 0.4,
    "pedacos": [
-    "Mas o pior|terra",
-    "é o *frio*.|terra,gelo"
+    "Mas o pior|praia",
+    "é o *frio*.|praia"
    ]
   },
   {
    "id": "C3",
    "pausa": 0.3,
    "pedacos": [
-    "Em uma semana,|gelo",
-    "a Terra inteira fica|gelo,terra",
+    "Em uma semana,|praia",
+    "a Terra inteira fica|praia,gelo",
     "abaixo de *zero*.|gelo"
    ]
   },
