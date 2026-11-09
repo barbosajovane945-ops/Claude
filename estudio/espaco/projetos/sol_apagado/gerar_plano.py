@@ -70,7 +70,7 @@ planos = [
   "camera": {"de": cam(enquadrar=["orbita"], ocupa=0.5, az=az(T["B3"]) - 3, el=50), "para": cam(enquadrar=["orbita", "terra"], ocupa=0.5, az=az(T["B3"]) - 8, el=48), "curva": "meio"}},
 
 
- {"de": "L1", "novo": "do chão: a Lua no céu deixa o mar prateado, e apaga", "longo": True, "luz": "camera", "borrao": False,
+ {"de": "L1", "novo": "do chão: a Lua no céu deixa o mar prateado, e apaga", "longo": True, "veu": True, "luz": "camera", "borrao": False,
   "camera": {"de": {"em": "praia", "pos": [0, 2.6, 15], "alvo": [6, 9, -60], "mm": 24}, "para": {"em": "praia", "pos": [0.3, 2.5, 14], "alvo": [4, 7, -60], "mm": 24}, "curva": "meio"}},
  {"de": "M1", "continuo": True, "longo": True, "luz": "camera", "borrao": False, "novo": "a câmera vira para o horizonte: a manhã não chega",
   "camera": {"de": {"em": "praia", "pos": [0.3, 2.5, 14], "alvo": [4, 7, -60], "mm": 24}, "para": {"em": "praia", "pos": [0.4, 2.5, 13.5], "alvo": [-30, 3.0, -50], "mm": 24}, "curva": "meio"}},
