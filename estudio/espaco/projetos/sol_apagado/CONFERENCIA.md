@@ -71,6 +71,6 @@ Análise de 1405 quadros a 24 qps (58.5 s).
 
 1 aviso(s) (confira no quadro):
 
-- p05: a faixa da legenda fica clara por 0.9 s (mais de 30% dos pixels claros atrás da palavra: água, anéis, um corpo brilhante); a palavra perde contraste. Mude o ângulo, tire o objeto claro de trás da palavra ou use "veu": true
+- p05: a tela quase não muda em relação ao p04 (diferença 1.9%, 23% do brilho do quadro): o corte parece o mesmo plano repetido. Mude o tamanho (ocupa ou lente), o lado do quadro (compo), o assunto ou o ângulo de verdade, ou junte os dois planos
 
 Folha de contato (1 quadro por segundo): `saida/folha.jpg`
