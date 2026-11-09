@@ -570,21 +570,41 @@ function drawBG(name,t,S,sim,clockT){
 /* ---------- objetos (tempo simulado ou próprio) ---------- */
 function drawObjects(S,t,sim){
   if(S.bg==='school'&&S.ballOn){
-    const bx=200+clamp((sim-2.5)*180,0,380);
+    const bx=200+clamp((sim-2.5)*180,0,230);
     let by=1330;
     if(S.ballFall!==null)by=Math.min(1500,1330+(t-S.ballFall)*(t-S.ballFall)*500);
-    ctx.fillStyle='#e85a3a';ctx.beginPath();ctx.arc(bx,by,26,0,7);ctx.fill();
+    // sombra no chão, que fica menor quanto mais alta a bola
+    const hgt=clamp((1500-by)/300,0,1);
+    softShadow(bx,1520,26*(1-hgt*.5)+6,7*(1-hgt*.5)+2,.35*(1-hgt*.4));
+    // rastro de movimento enquanto a bola está rolando
+    if(S.ballFall===null&&ctx){
+      for(let k=1;k<=4;k++){ctx.fillStyle=`rgba(232,90,58,${.12*(5-k)/4})`;ctx.beginPath();ctx.arc(bx-k*14,by,26-k*2,0,7);ctx.fill();}
+    }
+    // bola com sombreamento e brilho especular
+    const bg=ctx.createRadialGradient(bx-9,by-9,4,bx,by,26);
+    bg.addColorStop(0,'#ffb49a');bg.addColorStop(.35,'#e85a3a');bg.addColorStop(1,'#6a1e0e');
+    ctx.fillStyle=bg;ctx.beginPath();ctx.arc(bx,by,26,0,7);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.55)';ctx.beginPath();ctx.ellipse(bx-9,by-10,6,4,-.6,0,7);ctx.fill();
     person(200,1520,'#7a4f9a',sim);
   }
   if(S.bg==='school')person(200,1520,'#7a4f9a',sim);
   if(S.bg==='school')person(860,1520,'#3f7a5a',sim);
   if(S.bg==='bed_night'||S.bg==='window'){
     // desk / cup
+    const drawCup=(cx,cy)=>{
+      // sombra do copo na mesa ou no chão
+      softShadow(cx+23,cy+44,30,6,.45);
+      const cg=ctx.createLinearGradient(cx,0,cx+46,0);
+      cg.addColorStop(0,'#b9bfcc');cg.addColorStop(.35,'#f4f6fa');cg.addColorStop(.7,'#dfe3eb');cg.addColorStop(1,'#8c93a3');
+      ctx.fillStyle=cg;ctx.beginPath();ctx.roundRect(cx,cy-40,46,50,6);ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.7)';ctx.fillRect(cx+6,cy-34,4,36);
+      ctx.fillStyle='#3a2a20';ctx.beginPath();ctx.ellipse(cx+23,cy-40,23,5,0,0,7);ctx.fill();
+    };
     if(S.cupT!==null){
       const cy=Math.min(1180+(t-S.cupT)*(t-S.cupT)*900,1520);
-      ctx.fillStyle='#e6e9f2';ctx.beginPath();ctx.roundRect(740,cy-40,46,50,6);ctx.fill();
+      drawCup(740,cy);
     }else if(S.bg==='bed_night'){
-      ctx.fillStyle='#e6e9f2';ctx.beginPath();ctx.roundRect(740,1140,46,40,6);ctx.fill();
+      drawCup(740,1180);
     }
   }
   if(S.bg==='bed_night'&&S.pencil!=='none'){
@@ -668,6 +688,24 @@ function frame(now){
   ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
   drawBG(S.bg,t,S,simT,clockT);
   drawObjects(S,t,simT);
+
+  // poeira no ar: anda com o tempo do mundo, então para quando o tempo para
+  if(S.bg==='school'||S.bg==='bed_night'||S.bg==='window'){
+    for(let i=0;i<50;i++){
+      const x=mod(sr(i)*W+simT*6,W),y=300+sr(i+17)*1100;
+      ctx.fillStyle=`rgba(255,250,235,${.15+sr(i+3)*.25})`;
+      ctx.beginPath();ctx.arc(x,y,1.5+sr(i+5)*1.5,0,7);ctx.fill();
+    }
+  }
+
+  // tempo parado: o mundo perde cor e ganha um tom azulado
+  const frozenK=1-tsRamp;
+  if(frozenK>.02){
+    ctx.save();ctx.setTransform(1,0,0,1,0,0);
+    ctx.globalCompositeOperation='saturation';ctx.fillStyle=`rgba(128,128,128,${.9*frozenK})`;ctx.fillRect(0,0,W,H);
+    ctx.globalCompositeOperation='multiply';ctx.fillStyle=`rgba(170,205,235,${.35*frozenK})`;ctx.fillRect(0,0,W,H);
+    ctx.restore();
+  }
   if(S.glint&&S.bg==='window'){ /* brilho sutil nos olhos (reflexo na janela) */ }
 
   if(S.creature){
