@@ -71,6 +71,6 @@ Análise de 1405 quadros a 24 qps (58.5 s).
 
 1 aviso(s) (confira no quadro):
 
-- p05: a tela quase não muda em relação ao p04 (diferença 1.9%, 23% do brilho do quadro): o corte parece o mesmo plano repetido. Mude o tamanho (ocupa ou lente), o lado do quadro (compo), o assunto ou o ângulo de verdade, ou junte os dois planos
+- p05: a tela quase não muda em relação ao p04 (diferença 1.8%, 22% do brilho do quadro): o corte parece o mesmo plano repetido. Mude o tamanho (ocupa ou lente), o lado do quadro (compo), o assunto ou o ângulo de verdade, ou junte os dois planos
 
 Folha de contato (1 quadro por segundo): `saida/folha.jpg`
