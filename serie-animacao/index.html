@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Miguel: O Poder Despertado — Episódios 1 a 4</title>
+<style>
+  html,body{margin:0;height:100%;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  #wrap{position:relative;height:min(100vh,177.78vw);aspect-ratio:9/16;background:#000;overflow:hidden;container-type:size;cursor:pointer}
+  canvas{position:absolute;inset:0;width:100%;height:100%}
+  .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.7) 100%)}
+  .ov{position:absolute;left:0;right:0;color:#fff;font-family:"Segoe UI",Helvetica,Arial,sans-serif;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s}
+  .ov.on{opacity:1}
+  #sub{bottom:6%;padding:0 6cqw;box-sizing:border-box;font-size:3.2cqh;font-weight:600;text-shadow:0 0 10px #000,0 0 3px #000}
+  #sub b{display:block;font-size:2.2cqh;letter-spacing:.18em;color:#9fd4ff;margin-bottom:.6cqh}
+  #sub.narr{font-style:italic;font-weight:400}
+  #card{top:40%;padding:0 8cqw;box-sizing:border-box;font-size:3.6cqh;font-weight:700;text-shadow:0 0 14px #000}
+  #card small{display:block;font-size:2.2cqh;font-weight:400;margin-top:1.4cqh;opacity:.85}
+  #ep{top:2%;left:3%;right:auto;text-align:left;font-size:2cqh;opacity:.55;pointer-events:auto}
+  #ep select{background:#111;color:#eee;border:1px solid #444;font-size:1.8cqh;padding:.3cqh .6cqh}
+  #fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c"></canvas>
+  <div class="vig"></div>
+  <div id="fade"></div>
+  <div id="sub" class="ov"></div>
+  <div id="card" class="ov"></div>
+  <div id="ep" class="ov on">
+    <select id="sel">
+      <option value="1">Episódio 1 — O Dia Normal</option>
+      <option value="2">Episódio 2 — Algo Está Errado</option>
+      <option value="3">Episódio 3 — O Despertar</option>
+      <option value="4">Episódio 4 — O Monstro</option>
+    </select>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   MIGUEL: O PODER DESPERTADO — animação com legendas (sem áudio)
+   Episódios 1 a 3: só Miguel. Criatura aparece apenas no episódio 4.
+   Eventos: [tempo, tipo, valor]. Legendas: [início, fim, falante, texto].
+   Mundo congelado: 'stop' true faz objetos e pessoas pararem;
+   Miguel e o relógio do quarto seguem o tempo normal.
+   ============================================================ */
+
+const W=1080,H=1920,FY=1560;
+const cv=document.getElementById('c');cv.width=W;cv.height=H;
+const ctx=cv.getContext('2d');
+const Q=new URLSearchParams(location.search);
+const FORCE=Q.has('t')?parseFloat(Q.get('t')):null;
+const EPN=Q.has('ep')?parseInt(Q.get('ep')):1;
+
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,k)=>a+(b-a)*k;
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const sr=i=>{const v=Math.sin(i*127.1+311.7)*43758.5453;return v-Math.floor(v);};
+const mod=(a,n)=>((a%n)+n)%n;
+const $=id=>document.getElementById(id);
+
+/* ---------- expressões de Miguel (valores-alvo) ----------
+   bi/bo: sobrancelha interna/externa (negativo = levantada)
+   e: abertura dos olhos   p: tamanho da pupila   c: sorriso (+) / tristeza (-)
+   o: boca aberta   b: rubor   sw: gota de suor   tr: tremor   tilt: inclinação da cabeça */
+const EMO={
+  calm:     {bi:0,   bo:0,   e:1,    p:1,   c:.25, o:0,   b:0,  sw:0,  tr:0, tilt:0},
+  tired:    {bi:.4,  bo:.6,  e:.6,   p:1,   c:-.1, o:0,   b:0,  sw:0,  tr:0, tilt:.08},
+  curious:  {bi:-.6, bo:-.2, e:1.12, p:1.1, c:.1,  o:.2,  b:0,  sw:0,  tr:0, tilt:-.08},
+  surprised:{bi:-1.2,bo:-1.2,e:1.45, p:.7,  c:0,   o:.9,  b:0,  sw:0,  tr:0, tilt:0},
+  scared:   {bi:-1,  bo:.4,  e:1.35, p:.5,  c:-.6, o:.45, b:0,  sw:1,  tr:1, tilt:.05},
+  determined:{bi:.9, bo:.3,  e:.85,  p:1.1, c:0,   o:0,   b:0,  sw:0,  tr:0, tilt:0},
+  focused:  {bi:.6,  bo:.2,  e:.75,  p:1,   c:-.05,o:0,   b:0,  sw:0,  tr:0, tilt:.05},
+  doubtful: {bi:-.3, bo:.6,  e:.95,  p:1,   c:-.2, o:0,   b:0,  sw:.3, tr:0, tilt:-.12},
+  relieved: {bi:-.1, bo:0,   e:.55,  p:1,   c:1,   o:0,   b:.8, sw:0,  tr:0, tilt:-.04}
+};
+
+/* ---------- roteiro: eventos e legendas por episódio ---------- */
+const EPS={
+1:{ev:[
+  [0,'bg','bed_am'],[0,'emo','tired'],[4,'emo','calm'],
+  [14,'bg','school'],[14,'emo','calm'],[18,'emo','relieved'],[21,'emo','calm'],
+  [30,'bg','bed_night'],[30,'emo','calm'],[30,'clock','run'],
+  [32,'emo','curious'],[32,'gaze',-.8],
+  [36,'clock','stop'],[36,'emo','surprised'],[38.5,'emo','curious'],
+  [42.5,'clock','run'],[42.5,'emo','doubtful'],[45,'emo','relieved'],
+  [49,'emo','tired'],[52,'clock','stop'],[52.5,'emo','scared'],
+  [56,'bg','black']
+ ],subs:[
+  [2,6,'NARRADOR','Todos os dias parecem iguais para Miguel.'],
+  [6.2,10,'NARRADOR','Ele acorda, vai para a escola e passa o dia como qualquer outro adolescente.'],
+  [10.2,13.5,'NARRADOR','Naquele dia, porém, algo que ele ainda não conseguia explicar estava prestes a começar.'],
+  [15,18,'NARRADOR','Na escola, nada parecia diferente.'],
+  [18.5,22,'NARRADOR','Miguel conversava com os amigos, assistia às aulas e seguia sua rotina normalmente.'],
+  [32,34,'MIGUEL','Ué...'],
+  [37,39,'MIGUEL','Que estranho.'],
+  [39.5,42,'NARRADOR','Miguel não sabia o que tinha acontecido.'],
+  [42.5,45,'NARRADOR','Para ele, aquilo provavelmente não passava de um defeito no relógio.'],
+  [45.5,47.5,'MIGUEL','Deve ser a pilha.'],
+  [53,56,'NARRADOR','Mas aquilo não era um defeito.']
+ ]},
+2:{ev:[
+  [0,'bg','school'],[0,'emo','calm'],[0,'gaze',0],
+  [2.5,'ball','roll'],
+  [8,'stop',true],[8.2,'emo','surprised'],[9.5,'arm',{R:'up'}],
+  [11,'emo','scared'],
+  [13,'stop',false],[13,'ball','fall'],[13.2,'arm',{R:'down'}],
+  [14,'emo','doubtful'],[14.8,'emo','relieved'],
+  [26,'bg','bed_night'],[26,'emo','focused'],[26,'cup','idle'],
+  [29,'stop',true],[32,'stop',false],
+  [33,'emo','relieved'],[35,'cup','fall'],[35.2,'emo','scared'],
+  [40,'bg','window'],[40,'emo','curious'],[40,'glint',true],[42,'glint',false],
+  [46,'emo','calm'],
+  [53,'bg','black']
+ ],subs:[
+  [2,6.5,'NARRADOR','No dia seguinte, Miguel voltou para a escola sem imaginar que aquilo aconteceria novamente.'],
+  [9,10.5,'MIGUEL','Que...'],
+  [10.7,12.5,'MIGUEL','O que tá acontecendo?'],
+  [14,15.8,'AMIGO','Você tá bem?'],
+  [16,18,'MIGUEL','Tô... acho que sim.'],
+  [19,21.5,'NARRADOR','Miguel não sabia explicar o que tinha acabado de acontecer.'],
+  [21.7,24.5,'NARRADOR','Mas, pela primeira vez, ele começou a desconfiar que aquilo talvez não fosse uma coincidência.'],
+  [26,27.5,'MIGUEL','Tá...'],
+  [27.7,30.2,'MIGUEL','Se isso aconteceu comigo duas vezes...'],
+  [30.5,33,'NARRADOR','Ele começa a treinar e tenta segurar o tempo por mais tempo.'],
+  [33.5,34.8,'MIGUEL','Sabia.'],
+  [35.3,37,'MIGUEL','Não é possível...'],
+  [38.5,41.5,'NARRADOR','Miguel ainda não sabia, mas estava cada vez mais perto de descobrir a verdade.']
+ ]},
+3:{ev:[
+  [0,'bg','bed_night'],[0,'emo','calm'],[0,'pencil','rest'],
+  [2,'emo','determined'],
+  [5,'pencil','lev'],
+  [8,'stop',true],[8,'emo','focused'],
+  [10,'emo','surprised'],
+  [11.5,'stop',false],[12,'pencil','drop'],[12,'emo','doubtful'],
+  [15,'bg','street'],[15,'emo','determined'],[15,'birds',true],
+  [18,'stop',true],[18,'emo','surprised'],
+  [22,'emo','tired'],
+  [24,'stop',false],
+  [27,'emo','determined'],
+  [30,'bg','dream'],[30,'emo','calm'],
+  [38,'emo','scared'],
+  [42,'bg','bed_night'],[42,'emo','scared'],
+  [45,'emo','tired'],[47,'emo','curious'],
+  [52,'bg','black']
+ ],subs:[
+  [1,4,'NARRADOR','Depois de dois acontecimentos impossíveis, Miguel decidiu parar de procurar explicações e começar a procurar respostas.'],
+  [4.5,6.5,'MIGUEL','Vamos tentar de novo.'],
+  [7,8.5,'MIGUEL','Concentra...'],
+  [10,11.5,'MIGUEL','Espera...'],
+  [12.5,14,'MIGUEL','Fui eu?'],
+  [15,17.5,'NARRADOR','Naquela noite, Miguel descobriu que conseguia interromper o movimento das coisas.'],
+  [17.8,19.5,'MIGUEL','Isso não pode ser real.'],
+  [20,22.5,'MIGUEL','Eu não consigo manter por muito tempo...'],
+  [23,25.5,'NARRADOR','Miguel havia descoberto seu primeiro poder.'],
+  [26,28,'NARRADOR','Mas ainda não fazia ideia de onde ele tinha vindo.'],
+  [31,34,'NARRADOR','Miguel dorme e começa a sonhar.'],
+  [34.5,37.5,'NARRADOR','No sonho, vê uma enorme energia atravessando o céu.'],
+  [38.5,40,'MIGUEL','Ah!'],
+  [41.5,43.5,'MIGUEL','Foi só um sonho...'],
+  [44,46,'MIGUEL','Quem era aquela coisa?'],
+  [46.5,49,'NARRADOR','Miguel acreditava que tinha sido apenas um pesadelo.']
+ ]},
+4:{ev:[
+  [0,'bg','street'],[0,'emo','calm'],[0,'wind',.2],[0,'gaze',0],
+  [2,'wind',.5],[6,'birds',true],[8,'wind',.9],[11,'wind',.4],
+  [12,'emo','doubtful'],[14,'emo','scared'],
+  [16,'creature',true],[17,'gaze',.6],
+  [20,'emo','scared'],[24,'emo','curious'],
+  [30,'card',true]
+ ],subs:[
+  [2,5.5,'NARRADOR','Nos três dias anteriores, Miguel havia descoberto algo impossível.'],
+  [5.8,7.5,'NARRADOR','Ele podia controlar o tempo.'],
+  [7.8,10,'NARRADOR','Mas ainda não sabia que seu poder havia sido sentido por alguém.'],
+  [12,13.8,'MIGUEL','Por que tá tudo tão quieto?'],
+  [14.2,16,'MIGUEL','Tem alguma coisa errada...'],
+  [18,19.5,'CRIATURA','Eu senti você.'],
+  [20,21.5,'MIGUEL','Quem é você?'],
+  [22.5,25.5,'CRIATURA','Você ainda nem sabe o que carrega dentro de si.'],
+  [26,27.5,'MIGUEL','Do que você tá falando?']
+ ]}
+};
+
+/* ---------- estado a partir dos eventos ---------- */
+function stateAt(ep,t){
+  const S={bg:'black',emo:'calm',x:540,arm:{L:'down',R:'down'},stop:false,
+    ballOn:false,ballFall:null,cupT:null,pencil:'none',pencilT:0,
+    clockRun:true,wind:.2,birds:false,creature:false,card:false,glint:false,gaze:0};
+  for(const e of ep.ev){
+    if(e[0]>t)break;
+    const [,k,v]=e;
+    switch(k){
+      case'bg':S.bg=v;break;case'emo':S.emo=v;break;case'x':S.x=v;break;
+      case'arm':S.arm=Object.assign({},S.arm,v);break;case'stop':S.stop=v;break;
+      case'gaze':S.gaze=v;break;case'wind':S.wind=v;break;case'birds':S.birds=v;break;
+      case'creature':S.creature=v;break;case'card':S.card=v;break;case'glint':S.glint=v;break;
+      case'ball':if(v==='roll')S.ballOn=true;if(v==='fall')S.ballFall=e[0];break;
+      case'cup':if(v==='idle')S.cupT=null;if(v==='fall')S.cupT=e[0];break;
+      case'pencil':S.pencil=v;S.pencilT=e[0];break;
+      case'clock':S.clockRun=(v==='run');break;
+    }
+  }
+  return S;
+}
+
+/* ---------- Miguel ---------- */
+const POSE={L:{down:[-104,-150],hold:[-60,-330]},R:{down:[104,-150],up:[160,-360],out:[200,-260]}};
+let cur={p:{...EMO.calm},hl:[-104,-150],hr:[104,-150],x:540};
+function drawMiguel(x,t,P,hL,hR,blink,walk){
+  const br=Math.sin(t*2.2)*3;
+  const bob=Math.sin(t*1.3)*2;
+  const tremble=Math.sin(t*45)*P.tr*1.2;
+  ctx.save();ctx.translate(tremble,0);
+
+  ctx.fillStyle='rgba(0,0,0,.5)';ctx.beginPath();ctx.ellipse(x,FY+6,130,22,0,0,7);ctx.fill();
+
+  // pernas
+  const fL=[x-44+walk,FY-8],fR=[x+46-walk,FY-8];
+  ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='#3a4256';ctx.lineWidth=50;
+  ctx.beginPath();ctx.moveTo(x-34,FY-280);ctx.lineTo(fL[0],fL[1]-20);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+34,FY-280);ctx.lineTo(fR[0],fR[1]-20);ctx.stroke();
+  ctx.fillStyle='#e6e9f2';
+  ctx.beginPath();ctx.ellipse(fL[0]+6,fL[1],36,11,0,0,7);ctx.fill();
+  ctx.beginPath();ctx.ellipse(fR[0]+6,fR[1],36,11,0,0,7);ctx.fill();
+
+  // camiseta
+  ctx.fillStyle='#0d0e14';
+  ctx.beginPath();ctx.moveTo(x-80,FY-440-br);ctx.quadraticCurveTo(x,FY-462-br,x+80,FY-440-br);
+  ctx.lineTo(x+66,FY-270);ctx.lineTo(x-66,FY-270);ctx.closePath();ctx.fill();
+
+  // braços: manga escura + antebraço de pele
+  const arm=(sx,sy,h,side)=>{
+    const ex=(sx+h[0])/2+side*12,ey=(sy+h[1])/2;
+    ctx.strokeStyle='#0d0e14';ctx.lineWidth=30;
+    ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(ex,ey);ctx.stroke();
+    ctx.strokeStyle='#d8a585';ctx.lineWidth=20;
+    ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(h[0],h[1]);ctx.stroke();
+    ctx.fillStyle='#d8a585';ctx.beginPath();ctx.arc(h[0],h[1],13,0,7);ctx.fill();
+  };
+  arm(x-78,FY-440-br,hL,-1);
+  arm(x+78,FY-440-br,hR,1);
+
+  // cabeça
+  const hx=x,hy=FY-560+bob-br*.3;
+  ctx.save();ctx.translate(hx,hy);ctx.rotate(P.tilt+Math.sin(t*.9)*.03);
+  ctx.fillStyle='#d8a585';ctx.fillRect(-18,40,36,50);
+  ctx.fillStyle='#0b0b10';ctx.beginPath();ctx.ellipse(0,-14,70,74,0,0,7);ctx.fill();
+  const fg=ctx.createLinearGradient(-60,-60,60,60);
+  fg.addColorStop(0,'#f6cfb2');fg.addColorStop(1,'#d69d7d');
+  ctx.fillStyle=fg;ctx.beginPath();ctx.ellipse(0,0,56,66,0,0,7);ctx.fill();
+  ctx.fillStyle='#e0ad8e';ctx.beginPath();ctx.ellipse(-55,6,9,15,0,0,7);ctx.ellipse(55,6,9,15,0,0,7);ctx.fill();
+
+  // rubor
+  if(P.b>.02){ctx.fillStyle=`rgba(255,110,120,${P.b*.35})`;ctx.beginPath();ctx.ellipse(-32,22,11,7,0,0,7);ctx.ellipse(32,22,11,7,0,0,7);ctx.fill();}
+
+  // franja (vento)
+  ctx.strokeStyle='#0b0b10';ctx.lineCap='round';
+  for(let i=0;i<8;i++){
+    const sx=-58+i*16,w=Math.sin(t*2.4+i*.8)*5*WIND;
+    ctx.lineWidth=7-Math.abs(i-3.5)*.4;
+    ctx.beginPath();ctx.moveTo(sx,-74);
+    ctx.quadraticCurveTo(sx*.8+w,-40,sx*.9+w*1.4,-18+Math.abs(i-3.5)*2);ctx.stroke();
+  }
+
+  // olhos
+  const lookX=P.gz*5+Math.sin(t*.7)*1;
+  for(const s of[-1,1]){
+    const ex0=s*22,ey=-6,ry=9*P.e*blink;
+    ctx.fillStyle='#f3efec';ctx.beginPath();ctx.ellipse(ex0,ey,12,Math.max(.5,ry),0,0,7);ctx.fill();
+    ctx.save();ctx.beginPath();ctx.ellipse(ex0,ey,12,Math.max(.5,ry),0,0,7);ctx.clip();
+    ctx.fillStyle='#2a1a22';ctx.beginPath();ctx.arc(ex0+lookX,ey+.5,6.5*P.p,0,7);ctx.fill();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ex0+lookX+2,ey-2,2.2,0,7);ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle='#0b0b10';ctx.lineWidth=3.5;
+    ctx.beginPath();ctx.ellipse(ex0,ey,13,Math.max(.5,ry)+1,0,Math.PI*1.05,Math.PI*1.95);ctx.stroke();
+    // sobrancelhas: interna perto do centro (s*12), externa (s*38)
+    ctx.strokeStyle='#0b0b10';ctx.lineWidth=5;
+    ctx.beginPath();
+    ctx.moveTo(s*12,-24+P.bi*12);
+    ctx.quadraticCurveTo(s*26,-27+(P.bi+P.bo)*6,s*38,-24+P.bo*12);
+    ctx.stroke();
+  }
+
+  // nariz e boca
+  ctx.strokeStyle='rgba(120,60,40,.4)';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(0,6);ctx.lineTo(-2,18);ctx.stroke();
+  ctx.strokeStyle='#7a3b33';ctx.lineWidth=3.5;
+  if(P.o>.08){
+    ctx.fillStyle='#5b1f22';ctx.beginPath();ctx.ellipse(0,32,6+P.o*2,2+P.o*8,0,0,7);ctx.fill();
+  }else{
+    ctx.beginPath();ctx.moveTo(-11,34-P.c*3);ctx.quadraticCurveTo(0,36-P.c*8,11,34-P.c*3);ctx.stroke();
+  }
+
+  // gota de suor
+  if(P.sw>.05){
+    ctx.globalAlpha=P.sw;ctx.fillStyle='#8fd3ff';
+    ctx.beginPath();ctx.moveTo(50,-70);ctx.quadraticCurveTo(58,-56,50,-50);ctx.quadraticCurveTo(42,-56,50,-70);ctx.fill();
+    ctx.globalAlpha=1;
+  }
+  ctx.restore();
+  ctx.restore();
+}
+
+/* ---------- personagens e objetos ---------- */
+function person(x,y,c,sim){
+  const sw=Math.sin(sim*4+x)*10;
+  ctx.strokeStyle='#0c0d12';ctx.lineWidth=12;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(x,y-70);ctx.lineTo(x-10+sw,y);ctx.moveTo(x,y-70);ctx.lineTo(x+10-sw,y);ctx.stroke();
+  ctx.fillStyle=c;ctx.fillRect(x-16,y-150,32,84);
+  ctx.fillStyle='#d8a585';ctx.beginPath();ctx.arc(x,y-166,13,0,7);ctx.fill();
+  ctx.fillStyle='#0c0d12';ctx.beginPath();ctx.arc(x,y-170,13,Math.PI,0);ctx.fill();
+}
+function bird(x,y,f){
+  ctx.strokeStyle='#0a0a0a';ctx.lineWidth=4;ctx.lineCap='round';
+  const w=Math.sin(f)*12;
+  ctx.beginPath();ctx.moveTo(x-18,y-w);ctx.quadraticCurveTo(x-6,y-6,x,y);ctx.quadraticCurveTo(x+6,y-6,x+18,y-w);ctx.stroke();
+}
+function leaf(x,y,rot){
+  ctx.save();ctx.translate(x,y);ctx.rotate(rot);
+  ctx.fillStyle='#5a7a2a';ctx.beginPath();ctx.ellipse(0,0,22,9,0,0,7);ctx.fill();
+  ctx.restore();
+}
+
+/* ---------- criatura (apenas episódio 4) ---------- */
+function drawCreature(x,t,topY){
+  ctx.save();ctx.translate(x,topY);ctx.scale(1.7,1.7);
+  const br=Math.sin(t*.8)*5;
+  const ag=ctx.createRadialGradient(0,450,50,0,450,700);
+  ag.addColorStop(0,'rgba(90,20,140,.35)');ag.addColorStop(1,'rgba(90,20,140,0)');
+  ctx.fillStyle=ag;ctx.fillRect(-800,-300,1600,1400);
+  ctx.fillStyle='#050608';ctx.strokeStyle='#050608';ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(-190,230+br);ctx.quadraticCurveTo(0,120+br,190,230+br);
+  ctx.lineTo(120,700);ctx.lineTo(-120,700);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.ellipse(-180,260,70,90,-.3,0,7);ctx.ellipse(180,260,70,90,.3,0,7);ctx.fill();
+  ctx.lineWidth=80;
+  ctx.beginPath();ctx.moveTo(-180,270);ctx.quadraticCurveTo(-300,500,-250,800+br);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(180,270);ctx.quadraticCurveTo(300,500,250,800-br);ctx.stroke();
+  ctx.beginPath();ctx.ellipse(0,60+br,95,115,0,0,7);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-70,20+br);ctx.lineTo(-170,-110);ctx.lineTo(-30,-10+br);ctx.fill();
+  ctx.beginPath();ctx.moveTo(70,20+br);ctx.lineTo(170,-110);ctx.lineTo(30,-10+br);ctx.fill();
+  ctx.strokeStyle=`rgba(140,70,255,${.5+.2*Math.sin(t*2)})`;ctx.lineWidth=5;
+  ctx.beginPath();ctx.ellipse(0,60+br,95,115,0,-2.2,-.6);ctx.stroke();
+  const eg=.8+.2*Math.sin(t*3);
+  ctx.shadowColor='#ff2a4a';ctx.shadowBlur=40;
+  ctx.fillStyle=`rgba(255,60,90,${eg})`;
+  for(const s of[-1,1]){ctx.beginPath();ctx.ellipse(s*38,55+br,24,11,s*.15,0,7);ctx.fill();}
+  ctx.shadowBlur=0;
+  ctx.restore();
+}
+
+/* ---------- cenários ---------- */
+function drawBG(name,t,S,sim,clockT){
+  if(name==='black'){ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);return;}
+  const night=name!=='bed_am'&&name!=='school';
+  let g=ctx.createLinearGradient(0,0,0,H);
+  if(name==='bed_am'){g.addColorStop(0,'#f2d7b0');g.addColorStop(1,'#7a5a3f');}
+  else if(name==='school'){g.addColorStop(0,'#cfe0ea');g.addColorStop(1,'#6e7f88');}
+  else if(name==='dream'){g.addColorStop(0,'#1a0633');g.addColorStop(1,'#050510');}
+  else if(name==='street'){g.addColorStop(0,'#03040a');g.addColorStop(1,'#1d2038');}
+  else{g.addColorStop(0,'#0b0d1c');g.addColorStop(1,'#1c1a28');}
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  if(name==='bed_am'){
+    ctx.fillStyle='rgba(255,240,200,.55)';ctx.fillRect(60,260,380,520);
+    ctx.fillStyle='#8a6a4f';ctx.fillRect(0,1240,440,320);
+    ctx.fillStyle='#e7d7c2';ctx.fillRect(0,1180,440,80);
+    ctx.fillStyle='#5b4330';ctx.fillRect(0,FY+10,W,H);
+  }
+  if(name==='bed_night'||name==='street'||name==='dream'||name==='window'){
+    if(name==='bed_night'){
+      ctx.fillStyle='rgba(120,150,220,.25)';ctx.fillRect(60,260,380,520);
+      ctx.fillStyle='#14162a';ctx.fillRect(0,0,W,H*.0+1);
+      // relógio de parede
+      ctx.fillStyle='#f4efe2';ctx.beginPath();ctx.arc(800,520,80,0,7);ctx.fill();
+      ctx.strokeStyle='#2a2a2a';ctx.lineWidth=8;ctx.stroke();
+      ctx.lineCap='round';ctx.lineWidth=7;
+      const ma=clockT*.9-Math.PI/2,ha=clockT*.08-Math.PI/2;
+      ctx.beginPath();ctx.moveTo(800,520);ctx.lineTo(800+Math.cos(ha)*40,520+Math.sin(ha)*40);ctx.stroke();
+      ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(800,520);ctx.lineTo(800+Math.cos(ma)*62,520+Math.sin(ma)*62);ctx.stroke();
+      // mesa
+      ctx.fillStyle='#3a2a20';ctx.fillRect(640,1180,420,40);
+      ctx.fillStyle='#2a1e16';ctx.fillRect(660,1220,380,340);
+      // cama
+      ctx.fillStyle='#2b3350';ctx.fillRect(0,1240,300,320);
+    }
+    if(name==='window'){
+      ctx.fillStyle='#0b1020';ctx.fillRect(180,280,720,800);
+      for(let i=0;i<40;i++){ctx.fillStyle=`rgba(255,${180+sr(i)*60|0},120,${.3+sr(i+4)*.5})`;ctx.fillRect(200+sr(i+1)*680,300+sr(i+2)*700,10+sr(i)*14,10+sr(i+7)*20);}
+      ctx.strokeStyle='#241a14';ctx.lineWidth=18;ctx.strokeRect(180,280,720,800);
+      ctx.fillStyle='#3a2a20';ctx.fillRect(0,1400,W,H);
+    }
+    if(name==='street'){
+      for(let i=0;i<14;i++){const x=i*110-40,h=420+sr(i)*700;ctx.fillStyle='#0a0c16';ctx.fillRect(x,1400-h,100,h);
+        for(let r=0;r<h/50;r++)for(let c=0;c<3;c++)if(sr(i*9+r*3+c)<.3){ctx.fillStyle='rgba(255,190,120,.55)';ctx.fillRect(x+12+c*28,1400-h+16+r*50,12,18);}}
+      ctx.fillStyle='#1d2130';ctx.fillRect(0,1400,W,120);
+      ctx.fillStyle='#0e1119';ctx.fillRect(0,1520,W,H);
+      ctx.fillStyle='rgba(220,230,255,.15)';
+      for(let i=0;i<20;i++)ctx.fillRect(sr(i)*W,sr(i+30)*H*.5,2,60);
+    }
+    if(name==='dream'){
+      const gb=ctx.createLinearGradient(0,400,W,900);
+      gb.addColorStop(0,'rgba(180,80,255,0)');gb.addColorStop(.5,'rgba(230,150,255,.7)');gb.addColorStop(1,'rgba(180,80,255,0)');
+      ctx.fillStyle=gb;ctx.beginPath();ctx.moveTo(0,300);ctx.lineTo(W,700);ctx.lineTo(W,820);ctx.lineTo(0,420);ctx.fill();
+      ctx.fillStyle='#14062a';ctx.fillRect(0,FY+10,W,H);
+    }
+  }
+  if(name==='school'){
+    for(let i=0;i<5;i++){ctx.fillStyle=['#7b5cb0','#4f8a6b','#b06a4f','#4f6fb0','#a08a3a'][i];ctx.fillRect(i*216,900,200,500);}
+    ctx.fillStyle='#8aa0a8';ctx.fillRect(0,1400,W,160);
+    ctx.fillStyle='#c9d4d9';ctx.fillRect(0,FY+10,W,H);
+    ctx.fillStyle='rgba(255,255,255,.3)';ctx.fillRect(0,1560,W,4);
+  }
+  if(name==='bed_am'||name==='school'){}
+}
+
+/* ---------- objetos (tempo simulado ou próprio) ---------- */
+function drawObjects(S,t,sim){
+  if(S.bg==='school'&&S.ballOn){
+    const bx=200+clamp((sim-2.5)*180,0,380);
+    let by=1330;
+    if(S.ballFall!==null)by=Math.min(1500,1330+(t-S.ballFall)*(t-S.ballFall)*500);
+    ctx.fillStyle='#e85a3a';ctx.beginPath();ctx.arc(bx,by,26,0,7);ctx.fill();
+    person(200,1520,'#7a4f9a',sim);
+  }
+  if(S.bg==='school')person(200,1520,'#7a4f9a',sim);
+  if(S.bg==='school')person(860,1520,'#3f7a5a',sim);
+  if(S.bg==='bed_night'||S.bg==='window'){
+    // desk / cup
+    if(S.cupT!==null){
+      const cy=Math.min(1180+(t-S.cupT)*(t-S.cupT)*900,1520);
+      ctx.fillStyle='#e6e9f2';ctx.beginPath();ctx.roundRect(740,cy-40,46,50,6);ctx.fill();
+    }else if(S.bg==='bed_night'){
+      ctx.fillStyle='#e6e9f2';ctx.beginPath();ctx.roundRect(740,1140,46,40,6);ctx.fill();
+    }
+  }
+  if(S.bg==='bed_night'&&S.pencil!=='none'){
+    let py=1170;
+    if(S.pencil==='lev')py=1170-140*ease(clamp((sim-5)/1.5))-(sim>5?0:0);
+    if(S.pencil==='drop')py=1170-140*0+(t-S.pencilT)*(t-S.pencilT)*600;
+    py=Math.min(py,1170);
+    ctx.save();ctx.translate(560,py);ctx.rotate(S.pencil==='lev'?-.3:0);
+    ctx.fillStyle='#f0b429';ctx.fillRect(-60,-6,120,12);
+    ctx.fillStyle='#333';ctx.fillRect(-60,-6,10,12);
+    ctx.restore();
+  }
+  if(S.bg==='street'){
+    for(let i=0;i<8;i++){const x=mod(i*180-S.windPh,1300)-100;leaf(x,900+sr(i)*500,i*1.3+S.windPh*.01);}
+    if(S.birds){for(let i=0;i<3;i++)bird(300+i*90+mod(sim*120,1000)*(i%2?1:.6),500+i*40,S.birdPh+i);}
+  }
+}
+
+/* ---------- estado do relógio e do vento ---------- */
+let simT=0,clockT=0,windPh=0,birdPh=0,tsRamp=1,lastT=0,Tloop=0;
+let stateCache=null;
+
+/* ---------- legendas e cartão ---------- */
+function setSub(e){
+  const el=$('sub');
+  if(!e){el.classList.remove('on');return;}
+  el.className='ov on'+(e[2]==='NARRADOR'?' narr':'');
+  el.innerHTML=e[2]==='NARRADOR'?e[3]:`<b>${e[2]}</b>${e[3]}`;
+}
+let lastSub=null;
+
+/* ---------- loop ---------- */
+let WIND=.5,ep=null,t0=performance.now(),paused=false,last=performance.now();
+function setEp(n){ep=EPS[n];ep.ev.sort((a,b)=>a[0]-b[0]);}
+setEp(clamp(EPN,1,4));
+
+function advance(dt,t){
+  const S=stateAt(ep,t);
+  const target=S.stop?0:1;
+  tsRamp+=(target-tsRamp)*Math.min(1,dt*4);
+  simT+=dt*tsRamp;
+  if(S.clockRun)clockT+=dt;
+  windPh+=dt*S.wind*700;
+  birdPh+=dt*6;
+  return S;
+}
+
+function frame(now){
+  const dt=paused?0:Math.min(.05,(now-last)/1000);
+  last=now;
+  let t;
+  if(FORCE!==null){
+    if(!stateCache){simT=0;clockT=0;windPh=0;birdPh=0;tsRamp=1;for(let x=0;x<FORCE;x+=1/60)advance(1/60,x);stateCache=true;}
+    t=FORCE;
+  }else{
+    Tloop=(Tloop+dt)%60;
+    t=Tloop;
+    if(t<lastT){simT=0;clockT=0;windPh=0;birdPh=0;tsRamp=1;}
+    lastT=t;
+    advance(dt,t);
+  }
+  const S=stateAt(ep,t);
+  S.windPh=windPh;S.birdPh=birdPh;
+  WIND=.5+.5*Math.sin(t*.9);
+
+  // Miguel: expressão e posição suavizadas
+  const k=FORCE!==null?1:Math.min(1,dt*7);
+  const tg=EMO[S.emo]||EMO.calm;
+  for(const key of Object.keys(tg))cur.p[key]=lerp(cur.p[key],tg[key],k);
+  cur.p.gz=lerp(cur.p.gz||0,S.gaze,k);
+  cur.x=lerp(cur.x,S.x,FORCE!==null?1:Math.min(1,dt*3));
+  const hl=POSE.L[S.arm.L||'down'],hr=POSE.R[S.arm.R||'down'];
+  cur.hl=[lerp(cur.hl[0],540+hl[0]-540,k),lerp(cur.hl[1],hl[1],k)];
+  cur.hr=[lerp(cur.hr[0],hr[0],k),lerp(cur.hr[1],hr[1],k)];
+  const hLw=[cur.x+cur.hl[0],FY+cur.hl[1]];
+  const hRw=[cur.x+cur.hr[0],FY+cur.hr[1]];
+  const blink=(t%3.3)<.12?.1:1;
+  const walk=0;
+
+  // mundo
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+  drawBG(S.bg,t,S,simT,clockT);
+  drawObjects(S,t,simT);
+  if(S.glint&&S.bg==='window'){ /* brilho sutil nos olhos (reflexo na janela) */ }
+
+  if(S.creature){
+    ctx.globalAlpha=clamp((t-16)/1.2);
+    drawCreature(800,t,240);
+    ctx.globalAlpha=1;
+  }
+
+  drawMiguel(cur.x,t,cur.p,hLw,hRw,blink,walk);
+
+  // tela: chuva leve no fundo da rua
+  if(S.bg==='street'){
+    ctx.fillStyle='rgba(220,230,255,.25)';
+    for(let i=0;i<60;i++){const x=sr(i)*W,y=mod(sr(i+5)*H+t*900,H);ctx.fillRect(x,y,2,40);}
+  }
+
+  // legendas
+  let sub=null;
+  for(const e of ep.subs)if(t>=e[0]&&t<e[1]){sub=e;break;}
+  const key=sub?sub.join('|'):'';
+  if(key!==lastSub){setSub(sub);lastSub=key;}
+
+  // cartão de pendência (embate)
+  const card=$('card');
+  card.classList.toggle('on',S.card);
+  if(S.card)card.innerHTML='Embate do Episódio 4<small>Cena pendente, aguardando o roteiro do autor.</small>';
+
+  // escurecimento de entrada/saída
+  const fadeIn=t<1.2?clamp(1-t/1.2):0;
+  $('fade').style.opacity=fadeIn;
+
+  if(FORCE===null)requestAnimationFrame(frame);
+}
+
+$('wrap').addEventListener('click',e=>{if(e.target.tagName!=='SELECT')paused=!paused;});
+$('sel').value=String(clamp(EPN,1,4));
+$('sel').addEventListener('change',e=>{location.search='?ep='+e.target.value;});
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
