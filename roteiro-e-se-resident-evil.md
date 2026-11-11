@@ -18,9 +18,8 @@ Estilo de referência: 1000168750.mp4 (personagem simples de camiseta "CLD", fun
 ## Plano 3 (8–13 s)
 **Visual:** corte para um raio-X azul brilhante do personagem.
 **Legenda:** "SEU CÉREBRO GASTA 20%."
-**Narração:** "Em momentos de medo, o cérebro consome muito mais energia que o normal."
-**Efeito:** medidor "×8" ao lado do cérebro.
-> ⚠️ **Revisar fato:** o cérebro usa ~20% da energia do corpo em repouso (correto). O "×8" sob medo não é um número estabelecido. Sugestão: "Sob estresse, o cérebro e o corpo gastam mais energia e glicose." e remover o medidor "×8".
+**Narração:** "Sob estresse, o cérebro e o corpo gastam mais energia e glicose."
+**Efeito:** medidor "20%" ao lado do cérebro.
 
 ## Plano 4 (13–17 s)
 **Visual:** sala escura com vitrine quebrada, o Claude se aproximando.
@@ -29,9 +28,9 @@ Estilo de referência: 1000168750.mp4 (personagem simples de camiseta "CLD", fun
 
 ## Plano 5 (17–22 s)
 **Visual:** cronômetro flutuando sobre o personagem, marcando 3:00 e encolhendo.
-**Legenda:** "SEM AR, VOCÊ AGUENTA 3 MINUTOS."
+**Legenda:** "SEM AR, O CÉREBRO SOFRE EM POUCOS MINUTOS."
 **Narração:** "Por isso, respirar com calma faz diferença quando tudo dá errado."
-> ⚠️ **Revisar fato:** "3 minutos" é uma simplificação; o tempo varia muito e depende de quem está. Sugestão: "SEM AR, O CÉREBRO SOFRE EM POUCOS MINUTOS." e cronômetro marcando "4:00".
+**Efeito:** cronômetro marcando "4:00" e encolhendo.
 
 ## Plano 6 (22–26 s)
 **Visual:** silhueta de zumbi na escuridão, com olhos amarelos brilhando.
@@ -86,9 +85,8 @@ Estilo de referência: 1000168750.mp4 (personagem simples de camiseta "CLD", fun
 
 ## Plano 16 (67–72 s)
 **Visual:** raio-X dos pulmões com "300 MILHÕES" de alvéolos.
-**Legenda:** "OS PULMÕES TÊM 300 MILHÕES DE PEQUENOS SACOS."
+**Legenda:** "OS PULMÕES TÊM CERCA DE 300 MILHÕES DE PEQUENOS SACOS."
 **Narração:** "Eles trocam o ar que você respira, e cada um precisa funcionar agora."
-> ✅ Fato conferido: os pulmões têm cerca de 300 a 500 milhões de alvéolos. "300 milhões" é um número válido e conservador.
 
 ## Plano 17 (72–77 s)
 **Visual:** o Claude apoiado na parede, ofegante, com "×3" pulsando.
@@ -124,6 +122,6 @@ Estilo de referência: 1000168750.mp4 (personagem simples de camiseta "CLD", fun
 
 ## Observações para a produção
 
-- Os fatos (cérebro, coração, ossos, pulmões, ar) devem ser checados antes de publicar. Os itens marcados com ⚠️ acima não são precisos como estão.
+- Fatos checados: o cérebro usa cerca de 20% da energia do corpo em repouso; a mão tem 27 ossos; os pulmões têm cerca de 300 a 500 milhões de alvéolos (usamos "cerca de 300 milhões", valor conservador); o tempo sem ar que causa dano cerebral é de minutos e varia conforme a pessoa (usamos "poucos minutos"). Antes de publicar, confirme novamente com uma fonte médica.
 - A cidade e a corporação são fictícias, sem logos ou personagens da franquia, para evitar problemas de direitos autorais.
 - Nenhuma marca ou nome de jogo/filme deve aparecer em legendas, narração ou arte.
