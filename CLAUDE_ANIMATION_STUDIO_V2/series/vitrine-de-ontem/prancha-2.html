@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Prancha de estilos, rodada 2: Vitrine de Ontem, Ep. 1</title>
+<style>
+  body { margin: 0; background: #1b1b22; font-family: Arial, Helvetica, sans-serif; color: #fff; }
+  h1 { font-size: 22px; margin: 18px 24px 4px; font-weight: 700; }
+  p.nota { margin: 0 24px 16px; font-size: 14px; color: #bbb; }
+  .linha { display: flex; gap: 16px; padding: 0 24px 24px; }
+  .painel { flex: 1; }
+  .painel h2 { font-size: 15px; margin: 0 0 8px; color: #ffd166; }
+  .quadro { position: relative; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 10px; }
+  .quadro svg { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<h1>Prancha de estilos, rodada 2: Vitrine de Ontem, Ep. 1</h1>
+<p class="nota">Rascunho. Rosto com olhos e sobrancelhas marcados, corpo com proporção mais natural, cenário com mais detalhes da padaria e traço variado por estilo.</p>
+<div class="linha" id="linha"></div>
+
+<script>
+const estilos = {
+  D: { nome: "D. Pincel suave, cores quentes de padaria",
+       contorno: "#5b3a24", traco: 3, fundoA: "#f6d9b0", fundoB: "#e9b98a",
+       pele: "#eeb08a", cabelo: "#3a2619", camisa: "#d1495b", avental: "#fff4e0", calca: "#4a4a63", sapato: "#2b1d14",
+       vitrine: "#ffe2a8", pao: "#c98a45", balcao: "#8c5a34", balcaoTop: "#b9804f", luz: "#fff6dc", sombra: 0.25, pincel: true },
+  E: { nome: "E. Cartoon limpo, contorno grosso, cores vivas",
+       contorno: "#141414", traco: 6, fundoA: "#ffb703", fundoB: "#fb8500",
+       pele: "#f5b98f", cabelo: "#241812", camisa: "#2a9d8f", avental: "#ffffff", calca: "#264653", sapato: "#111111",
+       vitrine: "#fef3c7", pao: "#e09f3e", balcao: "#6b3f22", balcaoTop: "#a0622f", luz: "#fffbeb", sombra: 0.4, pincel: false },
+  F: { nome: "F. Quadrinho, hachura e luz fria",
+       contorno: "#0b1622", traco: 4, fundoA: "#1d3557", fundoB: "#0b1622",
+       pele: "#d99a72", cabelo: "#0d0d12", camisa: "#e76f51", avental: "#e9ecef", calca: "#2c3e50", sapato: "#050505",
+       vitrine: "#8ecae6", pao: "#bc6c25", balcao: "#3d2b1f", balcaoTop: "#5a3f2d", luz: "#a8dadc", sombra: 0.6, pincel: false }
+};
+
+function figura(e) {
+  const s = `stroke="${e.contorno}" stroke-width="${e.traco}" stroke-linejoin="round" stroke-linecap="round"`;
+  return `
+  <!-- sombra no chão -->
+  <ellipse cx="500" cy="1500" rx="210" ry="30" fill="#000" opacity="${e.sombra}"/>
+  <!-- pernas, mais longas -->
+  <path d="M430 1260 L420 1490 Q420 1505 440 1505 L474 1505 Q486 1505 486 1490 L492 1260 Z" fill="${e.calca}" ${s}/>
+  <path d="M508 1260 L516 1490 Q518 1505 532 1505 L566 1505 Q580 1505 578 1490 L570 1260 Z" fill="${e.calca}" ${s}/>
+  <!-- sapatos -->
+  <path d="M412 1490 Q410 1520 440 1522 L486 1522 Q496 1520 496 1500 Z" fill="${e.sapato}" ${s}/>
+  <path d="M506 1500 Q506 1522 520 1522 L572 1522 Q590 1520 586 1490 Z" fill="${e.sapato}" ${s}/>
+  <!-- tronco com ombros largos e cintura -->
+  <path d="M400 760 Q500 730 600 760 L622 1000 Q620 1080 600 1120 L402 1120 Q380 1080 378 1000 Z" fill="${e.camisa}" ${s}/>
+  <!-- avental -->
+  <path d="M440 900 L560 900 L572 1120 L428 1120 Z" fill="${e.avental}" ${s}/>
+  <!-- braço esquerdo, para baixo -->
+  <path d="M400 790 Q360 860 362 980 Q364 1040 386 1060" fill="none" stroke="${e.pele}" stroke-width="58" stroke-linecap="round"/>
+  <path d="M400 790 Q360 860 362 980 Q364 1040 386 1060" fill="none" ${s} stroke-width="${e.traco}" transform="translate(0,0)"/>
+  <!-- braço direito, segura o caderno -->
+  <path d="M600 790 Q640 860 630 940 Q626 970 614 980" fill="none" stroke="${e.pele}" stroke-width="58" stroke-linecap="round"/>
+  <path d="M600 790 Q640 860 630 940 Q626 970 614 980" fill="none" ${s} stroke-width="${e.traco}"/>
+  <!-- caderno -->
+  <rect x="560" y="930" width="150" height="112" rx="10" fill="#7c4a2d" ${s}/>
+  <rect x="570" y="940" width="130" height="92" rx="4" fill="${e.luz}" ${s}/>
+  <line x1="635" y1="940" x2="635" y2="1032" ${s}/>
+  <!-- mão segurando -->
+  <circle cx="606" cy="990" r="30" fill="${e.pele}" ${s}/>
+  <!-- pescoço -->
+  <rect x="470" y="700" width="60" height="70" fill="${e.pele}" ${s}/>
+  <!-- cabeça -->
+  <ellipse cx="500" cy="600" rx="118" ry="128" fill="${e.pele}" ${s}/>
+  <!-- cabelo com franja -->
+  <path d="M380 600 Q370 470 500 468 Q630 470 620 600 Q600 520 530 528 Q470 520 440 548 Q410 560 380 600 Z" fill="${e.cabelo}" ${s}/>
+  <!-- sobrancelhas marcadas -->
+  <path d="M440 548 Q456 532 478 546" fill="none" stroke="${e.cabelo}" stroke-width="${e.traco + 4}" stroke-linecap="round"/>
+  <path d="M522 546 Q544 532 560 548" fill="none" stroke="${e.cabelo}" stroke-width="${e.traco + 4}" stroke-linecap="round"/>
+  <!-- olhos com brilho -->
+  <ellipse cx="462" cy="606" rx="14" ry="18" fill="#1a1a1a"/>
+  <ellipse cx="538" cy="606" rx="14" ry="18" fill="#1a1a1a"/>
+  <circle cx="467" cy="599" r="5" fill="#ffffff"/>
+  <circle cx="543" cy="599" r="5" fill="#ffffff"/>
+  <!-- boca, sorriso leve de quem decide -->
+  <path d="M470 668 Q500 684 530 668" fill="none" stroke="#1a1a1a" stroke-width="${e.traco + 1}" stroke-linecap="round"/>
+  <!-- bochecha -->
+  <circle cx="440" cy="650" r="14" fill="#e76f51" opacity="0.25"/>
+  <circle cx="560" cy="650" r="14" fill="#e76f51" opacity="0.25"/>`;
+}
+
+function cenario(e) {
+  const s = `stroke="${e.contorno}" stroke-width="${e.traco}" stroke-linejoin="round"`;
+  return `
+  <defs>
+    <linearGradient id="g${e.nome.charAt(0)}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${e.fundoA}"/>
+      <stop offset="1" stop-color="${e.fundoB}"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1000" height="1700" fill="url(#g${e.nome.charAt(0)})"/>
+  <!-- vitrine com luz -->
+  <rect x="110" y="210" width="780" height="420" rx="16" fill="${e.vitrine}" ${s}/>
+  <rect x="130" y="230" width="740" height="380" rx="10" fill="${e.luz}" opacity="0.5"/>
+  <!-- prateleira com pães -->
+  <rect x="150" y="440" width="700" height="18" fill="#6b4226" ${s}/>
+  <ellipse cx="240" cy="418" rx="54" ry="34" fill="${e.pao}" ${s}/>
+  <ellipse cx="380" cy="418" rx="54" ry="34" fill="${e.pao}" ${s}/>
+  <ellipse cx="520" cy="418" rx="54" ry="34" fill="${e.pao}" ${s}/>
+  <ellipse cx="660" cy="418" rx="54" ry="34" fill="${e.pao}" ${s}/>
+  <!-- etiqueta de preço na vitrine -->
+  <rect x="700" y="500" width="150" height="54" rx="6" fill="#ffffff" ${s}/>
+  <text x="775" y="537" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="900" fill="#222">DIA 1</text>
+  <!-- balcão com detalhe de azulejo -->
+  <rect x="60" y="1090" width="880" height="170" fill="${e.balcao}" ${s}/>
+  <rect x="60" y="1066" width="880" height="36" fill="${e.balcaoTop}" ${s}/>
+  <rect x="90" y="1130" width="130" height="90" rx="6" fill="none" stroke="${e.contorno}" stroke-width="${e.traco - 1}" opacity="0.5"/>
+  <rect x="250" y="1130" width="130" height="90" rx="6" fill="none" stroke="${e.contorno}" stroke-width="${e.traco - 1}" opacity="0.5"/>
+  <!-- envelope de conta fechado, no balcão -->
+  <rect x="740" y="1010" width="200" height="80" fill="#ffffff" ${s}/>
+  <path d="M740 1010 L840 1060 L940 1010" fill="none" ${s}/>
+  <!-- chão -->
+  <rect x="0" y="1260" width="1000" height="440" fill="${e.balcao}" opacity="0.7"/>
+  <!-- luz quente sobre a personagem, para dar volume -->
+  <ellipse cx="500" cy="960" rx="420" ry="520" fill="${e.luz}" opacity="0.08"/>`;
+}
+
+function cena(e) {
+  return `
+  <svg viewBox="0 0 1000 1700" preserveAspectRatio="xMidYMid slice">
+    ${cenario(e)}
+    ${figura(e)}
+    <!-- legenda dentro de caixa -->
+    <rect x="70" y="1560" width="860" height="120" rx="18" fill="#000" opacity="0.6"/>
+    <text x="500" y="1622" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="900" fill="#ffffff">O CADERNO SE ABRE</text>
+  </svg>`;
+}
+
+function painel(e) {
+  return `
+  <div class="painel">
+    <h2>${e.nome}</h2>
+    <div class="quadro">${cena(e)}</div>
+  </div>`;
+}
+
+document.getElementById("linha").innerHTML = painel(estilos.D) + painel(estilos.E) + painel(estilos.F);
+</script>
+</body>
+</html>

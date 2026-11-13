@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Prancha de estilos: Vitrine de Ontem, Ep. 1</title>
+<style>
+  body { margin: 0; background: #1b1b22; font-family: Arial, Helvetica, sans-serif; color: #fff; }
+  h1 { font-size: 22px; margin: 18px 24px 4px; font-weight: 700; }
+  p.nota { margin: 0 24px 16px; font-size: 14px; color: #bbb; }
+  .linha { display: flex; gap: 16px; padding: 0 24px 24px; }
+  .painel { flex: 1; }
+  .painel h2 { font-size: 15px; margin: 0 0 8px; color: #ffd166; }
+  .quadro { position: relative; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 10px; }
+  .quadro svg { width: 100%; height: 100%; display: block; }
+  .hud { position: absolute; top: 4%; left: 6%; right: 6%; font-size: 14px; font-weight: 700; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
+  .barra { height: 10px; background: rgba(255,255,255,.25); border-radius: 6px; margin-top: 6px; overflow: hidden; }
+  .barra div { height: 100%; width: 7%; background: #ffd166; }
+  .legenda { position: absolute; bottom: 7%; left: 0; right: 0; text-align: center; font-size: 26px; font-weight: 900; color: #fff; text-shadow: 0 3px 10px rgba(0,0,0,.7); }
+  .estilo-a .fundo { fill: #f4a261; }
+  .estilo-b .fundo { fill: #cfe8e3; }
+  .estilo-c .fundo { fill: #2a2d3a; }
+</style>
+</head>
+<body>
+<h1>Prancha de estilos: Vitrine de Ontem, Ep. 1</h1>
+<p class="nota">Rascunho, não é o personagem final. Mesma cena nos três estilos: balcão da padaria, Dani com o caderno de receitas, envelope de conta fechado no balcão e a barra de progresso no topo.</p>
+
+<div class="linha" id="linha"></div>
+
+<script>
+// Desenho simples em SVG. Cada estilo muda só cores, contorno e sombra.
+const estilos = {
+  A: { nome: "A. Cartoon colorido com contorno", classe: "estilo-a", contorno: "#1d1d1d", pele: "#f2b38a", cabelo: "#3b2a1e", avental: "#ffffff", uniforme: "#e63946", fundo: "#f4a261", chao: "#c98a5b", sombra: 0, traco: 4 },
+  B: { nome: "B. Traço fino, pastel, sem contorno", classe: "estilo-b", contorno: "none", pele: "#f7d3b8", cabelo: "#6d5a4e", avental: "#fdfdfd", uniforme: "#9bc1bc", fundo: "#cfe8e3", chao: "#b7d7cf", sombra: 0, traco: 0 },
+  C: { nome: "C. Sombra dura, cartaz de contraste", classe: "estilo-c", contorno: "#000", pele: "#d9976b", cabelo: "#111", avental: "#e9e9e9", uniforme: "#ff6b35", fundo: "#2a2d3a", chao: "#1c1f2b", sombra: 1, traco: 2 }
+};
+
+function cena(e) {
+  const c = e.contorno;
+  const st = c === "none" ? "" : `stroke="${c}" stroke-width="${e.traco}" stroke-linejoin="round"`;
+  const sombra = `<ellipse cx="495" cy="1352" rx="190" ry="26" fill="#000" opacity="${e.sombra ? ".55" : ".3"}"/>`;
+  return `
+  <svg viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
+    <rect class="fundo" x="0" y="0" width="1080" height="1920" fill="${e.fundo}"/>
+    <!-- janela da padaria -->
+    <rect x="120" y="260" width="840" height="520" rx="18" fill="${e.sombra ? "#3a3f55" : "#ffe8c2"}" ${st}/>
+    <line x1="540" y1="260" x2="540" y2="780" ${st}/>
+    <!-- prateleira com pães -->
+    <rect x="160" y="520" width="360" height="22" fill="#8d5b3a" ${st}/>
+    <circle cx="220" cy="495" r="34" fill="#d99a4e" ${st}/>
+    <circle cx="300" cy="495" r="34" fill="#d99a4e" ${st}/>
+    <circle cx="380" cy="495" r="34" fill="#d99a4e" ${st}/>
+    <!-- balcão -->
+    <rect x="60" y="1080" width="960" height="150" fill="#8d5b3a" ${st}/>
+    <rect x="60" y="1060" width="960" height="34" fill="#b97a4d" ${st}/>
+    <!-- envelope de conta fechado -->
+    <rect x="740" y="1000" width="210" height="80" fill="#ffffff" ${st}/>
+    <path d="M740 1000 L845 1050 L950 1000" fill="none" ${st}/>
+    <!-- chão -->
+    <rect x="0" y="1230" width="1080" height="690" fill="${e.chao}"/>
+    ${sombra}
+    <!-- Dani -->
+    <g>
+      <rect x="400" y="980" width="180" height="120" rx="8" fill="${e.uniforme}" ${st}/>
+      <rect x="430" y="700" width="130" height="300" rx="50" fill="${e.uniforme}" ${st}/>
+      <rect x="450" y="980" width="90" height="170" fill="${e.avental}" ${st}/>
+      <rect x="410" y="1140" width="50" height="210" rx="20" fill="#3d3d4f" ${st}/>
+      <rect x="520" y="1140" width="50" height="210" rx="20" fill="#3d3d4f" ${st}/>
+      <rect x="392" y="1330" width="90" height="28" rx="12" fill="#1f1f29" ${st}/>
+      <rect x="512" y="1330" width="90" height="28" rx="12" fill="#1f1f29" ${st}/>
+      <circle cx="495" cy="590" r="105" fill="${e.pele}" ${st}/>
+      <path d="M390 585 Q395 470 495 470 Q600 470 600 585 Q580 520 495 520 Q420 520 390 585 Z" fill="${e.cabelo}" ${st}/>
+      <circle cx="455" cy="600" r="7" fill="#1d1d1d"/>
+      <circle cx="535" cy="600" r="7" fill="#1d1d1d"/>
+      <path d="M455 650 Q495 670 535 650" fill="none" stroke="#1d1d1d" stroke-width="5" stroke-linecap="round"/>
+      <!-- braço com caderno -->
+      <rect x="545" y="760" width="62" height="200" rx="28" fill="${e.pele}" ${st}/>
+      <!-- caderno de receitas, seguro pela mão -->
+      <rect x="585" y="905" width="150" height="104" rx="8" fill="#7c4a2d" ${st}/>
+      <rect x="595" y="915" width="130" height="84" rx="4" fill="#fff6d6" ${st}/>
+      <circle cx="604" cy="948" r="30" fill="${e.pele}" ${st}/>
+    </g>
+    <!-- legenda dentro da caixa -->
+    <rect x="90" y="1640" width="900" height="130" rx="20" fill="#000" opacity=".6"/>
+    <text x="540" y="1728" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="900" fill="#ffffff">O CADERNO SE ABRE</text>
+  </svg>`;
+}
+
+function quadro(chave, e) {
+  return `
+  <div class="painel">
+    <h2>${e.nome}</h2>
+    <div class="quadro ${e.classe}">
+      ${cena(e)}
+      <div class="hud">DIA 1 DE 15
+        <div class="barra"><div></div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+document.getElementById("linha").innerHTML =
+  quadro("A", estilos.A) + quadro("B", estilos.B) + quadro("C", estilos.C);
+</script>
+</body>
+</html>
